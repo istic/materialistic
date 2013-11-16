@@ -73,6 +73,8 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 */
 define('SHOW_DEBUG_BACKTRACE', TRUE);
 
+define('DATETIME_MYSQL', 'Y-m-d g:i:s');
+
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

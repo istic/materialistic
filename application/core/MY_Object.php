@@ -5,7 +5,7 @@ abstract class MY_Object {
 	
 	private $CI;
 	private $data;
-	
+
 	function __construct($data = false){
 		if($data){
 			$this->data = (Array)$data;
@@ -18,7 +18,7 @@ abstract class MY_Object {
 			$this->data = array();
 		}
 		
-		$this->CI =& get_instance();;
+		$this->CI =& get_instance();
 	}
 	
 	abstract function view_url();
@@ -53,6 +53,17 @@ abstract class MY_Object {
 	}
 	function set_data($data){
 		return $this->data = $data;
+	}
+
+	function save(){
+		if(!$this->model){
+			throw new Exception("Model not defined for ".get_class($this));
+		}
+		$model = $this->model;
+		$this->CI->load->model($model);
+		$id = $this->CI->$model->save($this->data);
+		$this->id = $id;
+		return;
 	}
 	
 }

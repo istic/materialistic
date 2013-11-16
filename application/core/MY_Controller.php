@@ -129,6 +129,11 @@ class MY_Controller extends CI_Controller {
     {
         $this->render('error/'.$view,  $this->viewdata);
     }
+
+    public function redirect($url, $statusCode = 303){
+    	header('Location: '.$url, true, $statusCode);
+    	die();
+    }
     
 }
 

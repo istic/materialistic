@@ -43,4 +43,37 @@ function slugify($text)
  
     return $text;
 }
- 
+
+function currency_symbol($currency){
+
+  switch($currency){
+    case "GBP":
+      return '&pound;';
+
+    case "USD":
+      return '$';
+
+    case "USD":
+      return 'CA$';
+
+    default:
+      return '?';
+  }
+}
+
+function view_currency($currency, $value){
+
+  switch($currency){
+    case "GBP":
+      return '&pound;'.number_format($value);
+
+    case "USD":
+      return '$'.number_format($value);
+
+    case "USD":
+      return 'CA$'.number_format($value);
+
+    default:
+      return number_format($value).$currency;
+  }
+}

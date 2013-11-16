@@ -1,0 +1,45 @@
+A crowdfund has
+	A name
+	A URL
+	A target
+	A final/current total (pledged)
+	An optional date started
+	A date ended
+	A number of backers
+	A site (Probably Kickstarter)
+	A last-checked date
+	A status 'live', 'successful', 'failed', 'suspended', 'deleted', or 'canceled'
+	A vitality ( Alive / Failed )
+	A Creator
+	A currency
+	A date_created
+	A date_modified
+	A category
+	A photo URL
+	A country
+
+A crowdfund log has
+	A crowdfund
+	A date
+	A log entry
+
+A user has
+	An email
+	A name
+	A password
+	A home currency
+
+A backing has
+	A crowdfund
+	A backing tier
+	A value
+	A status (Waiting / Delivered)
+	A date_created
+	A date_modified
+	A reasonable timeframe
+	A promised date
+
+A backing log has
+	A backing
+	A date
+	A log entry
