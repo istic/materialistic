@@ -12,7 +12,7 @@ class Auth extends MY_Controller {
     // Action
     public function register() {
         if ($this->current_user->logged_in()) {
-            redirect("/my/characters");
+            redirect("/");
             return;
         }
         $this->viewdata['subtitle'] = "Register";
@@ -318,7 +318,7 @@ class Auth extends MY_Controller {
 
         $this->Notification->send($this->current_user->id, "We've sent a verification link to your email address. Please click on it at some point");
 
-        redirect('/my/characters');
+        redirect('/');
     }
 
     function validate($code) {
@@ -329,7 +329,7 @@ class Auth extends MY_Controller {
 
         if ($result) {
             $this->Notification->send($this->current_user->id, "Email verified, Thanks.");
-            redirect('/my/characters');
+            redirect('/');
         } else {
             $this->render('auth/email_verify_failed');
         }
