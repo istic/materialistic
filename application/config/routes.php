@@ -67,5 +67,13 @@
 $route['default_controller'] = 'dashboard';
 $route['404_override'] = '';
 
+$route['docs/(:any)']     = 'docs/index/$1';
+$route['my/stats']       = 'dashboard/stats';
+$route['my/in-flight']   = 'dashboard/inflight';
+$route['my/by-category'] = 'dashboard/category';
+$route['my/projects']    = 'dashboard/projects';
+$route['my/by-month']    = 'dashboard/monthly';
+$route['my/by-lateness'] = 'dashboard/lateness';
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

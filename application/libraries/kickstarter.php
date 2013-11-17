@@ -8,7 +8,7 @@ class Kickstarter {
 	}
 
 	function search($query){
-		$cachefile = '/tmp/'.md5($query);
+		$cachefile = '/tmp/materialistic-'.md5($query);
 		if(file_exists($cachefile)){
 			return unserialize(file_get_contents($cachefile));
 		}

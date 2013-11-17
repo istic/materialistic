@@ -1,13 +1,16 @@
 
+	<div class="row">
+		<div class="col-sm-12 col-md-12 text-center">
+		<hr/>
+		&copy; <a href="http://istic.net">Istic.Networks</a> 2013<br/>
+		        <a href="/docs/colophon">Colophon</a> 
+		&mdash; <a href="/docs/terms">Terms &amp; Privacy</a> 
+		&mdash; <a href="/docs/cookies">Cookies</a> 
+		&mdash; <a href="/docs/about">About</a>
+		</div>
+	</div>
+
 	</div><!-- End Container -->
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-
-
-    <script src="/assets/js/materialistic.js"></script>
-    <script src="/assets/libraries/datepicker/bootstrap-datepicker.js"></script>
   </body>
 </html>

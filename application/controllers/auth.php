@@ -16,6 +16,7 @@ class Auth extends MY_Controller {
             return;
         }
         $this->viewdata['subtitle'] = "Register";
+        $this->viewdata['navsection'] = "register";
 
         $this->load->library('session');
         $this->load->library('form_validation');
@@ -29,6 +30,7 @@ class Auth extends MY_Controller {
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|xss_clean|callback_check_email');
         $this->form_validation->set_rules('pronoun', 'Pronoun', 'trim');
+        $this->form_validation->set_rules('home_currency', 'Home Currency', 'required|trim');
 
         $this->viewdata['pronouns'] = shuffle_assoc($this->Pronoun->list_options());
 
@@ -47,19 +49,20 @@ class Auth extends MY_Controller {
             $this->current_user = $user;
             
             $this->validate_email();
-            redirect("/my/characters");
+            redirect("/");
         }
     }
 
     // Action
     public function login() {
+        $this->viewdata['navsection'] = "login";
         $this->load->library('session');
         $this->load->library('form_validation');
         $this->load->helper('url');
 
         $this->viewdata['subtitle'] = "Login";
         if ($this->current_user->logged_in()) {
-            redirect("/my/characters");
+            redirect("/");
             return;
         }
 
@@ -79,7 +82,7 @@ class Auth extends MY_Controller {
             if ($location = $this->input->post("redirect_to")) {
                 redirect($location);
             } else {
-                redirect("/my/characters");
+                redirect("/");
             }
         }
     }
@@ -208,6 +211,7 @@ class Auth extends MY_Controller {
     }
 
     function account() {
+        $this->viewdata['navsection'] = "account";
         $this->viewdata['Subtitle'] = "Account Details";
 
         $this->requires_authentication();
@@ -219,6 +223,7 @@ class Auth extends MY_Controller {
         $this->form_validation->set_rules('name', 'Name', 'required|trim|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'required|callback_verify_password');
         $this->form_validation->set_rules('pronoun', 'Pronoun', 'trim');
+        $this->form_validation->set_rules('home_currency', 'Home Currency', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|xss_clean|callback_check_email');
         
         $this->viewdata['pronouns'] = shuffle_assoc($this->Pronoun->list_options());
@@ -231,6 +236,7 @@ class Auth extends MY_Controller {
                 'id' => $this->current_user->id,
                 'name' => $this->input->post("name"),
                 'email' => $this->input->post("email"),
+                'home_currency' => $this->input->post("home_currency"),
                 'pronoun' => $this->input->post("pronoun")
             );
 
@@ -241,11 +247,12 @@ class Auth extends MY_Controller {
                 $this->validate_email();
             }
 
-            redirect("/my/characters");
+            redirect("/");
         }
     }
 
     function change_password() {
+        $this->viewdata['navsection'] = "account";
         $this->viewdata['subtitle'] = "Change Password";
 
         $this->requires_authentication();
@@ -281,6 +288,7 @@ class Auth extends MY_Controller {
     }
 
     function validate_email() {
+        $this->viewdata['navsection'] = "account";
         $this->viewdata['subtitle'] = "Verify Email";
 
         $this->requires_authentication();

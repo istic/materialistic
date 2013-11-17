@@ -10,7 +10,7 @@ class Pledges extends AUTHED_Controller {
 		switch(isset($purl['host']) ? $purl['host'] : false){
 			case "www.kickstarter.com":
 				$dirs = explode('/', $purl['path']);
-				return $this->ks_search($dirs[2], $dirs[3]);
+				return $this->ks_search($dirs[3], $dirs[2]);
 				break;
 
 			case false:
@@ -24,13 +24,115 @@ class Pledges extends AUTHED_Controller {
 		}
 	}
 
+	public function undeliver(){
+		$this->load->model("Pledge");
+
+		$pledge_id = $this->input->get('id');
+		if(!$pledge_id){
+			return $this->error(404);
+		}
+
+		$pledge = $this->Pledge->fetch_by_id($pledge_id);
+		if( !$pledge || $pledge->user_id != $this->current_user->id ){
+			return $this->error(404);
+		}
+
+		$pledge->is_delivered = "No";
+		$pledge->date_delivered = 0;
+		$pledge->save();
+		return $this->redirect('/my/projects');
+	}
+
+
+	public function fail(){
+		$this->load->model("Pledge");
+
+		$pledge_id = $this->input->get('id');
+		if(!$pledge_id){
+			return $this->error(404);
+		}
+
+		$pledge = $this->Pledge->fetch_by_id($pledge_id);
+		if( !$pledge || $pledge->user_id != $this->current_user->id ){
+			return $this->error(404);
+		}
+
+		$pledge->is_delivered = "Failed";
+		$pledge->date_delivered = 0;
+		$pledge->save();
+		return $this->redirect('/my/projects');
+	}
+
+	public function unfail(){
+		$this->load->model("Pledge");
+
+		$pledge_id = $this->input->get('id');
+		if(!$pledge_id){
+			return $this->error(404);
+		}
+
+		$pledge = $this->Pledge->fetch_by_id($pledge_id);
+		if( !$pledge || $pledge->user_id != $this->current_user->id ){
+			return $this->error(404);
+		}
+
+		$pledge->is_delivered = "Waiting";
+		$pledge->date_delivered = 0;
+		$pledge->save();
+		return $this->redirect('/my/projects');
+	}
+
+	public function delivered(){
+		$this->load->model("Pledge");
+		$this->load->model('Campaign');
+        $this->load->library('form_validation');
+
+		$pledge_id = $this->input->get_post('id');
+		if(!$pledge_id){
+			return $this->error(404);
+		}
+
+		$pledge = $this->Pledge->fetch_by_id($pledge_id);
+		if( !$pledge || $pledge->user_id != $this->current_user->id ){
+			return $this->error(404);
+		}
+
+		$this->viewdata['pledge']   = $pledge;
+		$this->viewdata['campaign'] = $pledge->campaign();
+
+
+		$req = 'required|trim|xss_clean';
+		$nreq = 'trim|xss_clean';
+
+        $this->form_validation->set_rules('is_delivered', 'Delivered Status', 'required|trim|xss_clean|callback_valid_deliver_status');
+        $this->form_validation->set_rules('date_delivered', 'Delivered Date', $nreq.'|callback_valid_date[date_delivered]');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->render('pledge/delivered');
+        } else {
+        	$pledge->is_delivered   = $this->input->post('is_delivered');
+        	if($pledge->is_delivered == 'No'){
+        		$pledge->date_delivered = 0;
+        	} else {
+               	$pledge->date_delivered = $this->input->post('date_delivered');
+            }
+        	$pledge->save();
+        	return $this->redirect('/my/projects');
+        }
+	}
+
+
+	public function kickstarter(){
+		return $this->ks_search($this->input->post('query'));
+	}
+
 	public function create_campaign(){
         $this->load->library('form_validation');
         $this->load->model('Campaign');
 		$this->render('campaign/create');
 	}
 
-	public function ks_search($creator, $project){
+	public function ks_search($project, $creator = false){
 		$this->load->library('Kickstarter');
 		$this->load->model('Campaign');
 
@@ -40,16 +142,21 @@ class Pledges extends AUTHED_Controller {
 		if($campaign){
 			$this->redirect('/pledges/create?campaign='.$campaign->id);
 		} else {
-			$query = $project;
+			$query = strtr($project, '-', ' ');
 			$search = $this->kickstarter->search($query);
 			$campaigns = $this->kickstarter->create_from_search_results($search);
 			if(count($campaigns) == 1){
 				$this->redirect('/pledges/create?campaign='.$campaigns[0]->id);
 			} else {
 				$this->viewdata['campaigns'] = $campaigns;
-				$this->render('pledges/ks_search');
+				$this->viewdata['query'] = $query;
+				$this->render('pledge/ks_search');
 			}
 		}
+	}
+
+	public function edit(){
+		return $this->create();
 	}
 
 	public function create(){
@@ -57,11 +164,26 @@ class Pledges extends AUTHED_Controller {
 		$this->load->model('Pledge');
         $this->load->library('form_validation');
 
-       	$campaign_id = $this->input->get_post('campaign_id', TRUE);
-       	if(!$campaign_id){
-       		$campaign_id = $this->input->get_post('campaign', TRUE);
-       	}
-		
+        $pledge_id = $this->input->get_post('id', TRUE);
+        $pledge = false;
+        if($pledge_id){
+        	$pledge = $this->Pledge->fetch_by_id($pledge_id);
+        	$campaign_id = $pledge->campaign_id;
+        	if(!$pledge_id){
+        		return $this->error(404);
+        	}
+        	if($pledge->user_id != $this->current_user->id){
+        		return $this->error(404);
+        	}
+        } else {
+	       	$campaign_id = $this->input->get_post('campaign_id', TRUE);
+	       	if(!$campaign_id){
+	       		$campaign_id = $this->input->get_post('campaign', TRUE);
+	       	}
+        }
+
+        $this->viewdata['pledge'] = $pledge;
+
 		if($campaign_id){
 			$campaign = $this->Campaign->fetch_by_id($campaign_id);
 			$this->viewdata['campaign'] = $campaign;
@@ -77,16 +199,17 @@ class Pledges extends AUTHED_Controller {
 
         $this->form_validation->set_rules('backing_tier', 'Backing Tier', $req);
         $this->form_validation->set_rules('description', 'Description', $nreq);
-        $this->form_validation->set_rules('value', 'Pledge', $nreq.'|decimal');
+        $this->form_validation->set_rules('value', 'Pledge', $nreq.'|numeric');
         $this->form_validation->set_rules('is_delivered', 'Delivered Status', 'required|trim|xss_clean|callback_valid_deliver_status');
 
         $this->form_validation->set_rules('date_promised', 'Promised Date', $req.'|callback_valid_date[date_promised]');
-        $this->form_validation->set_rules('date_reasonable', 'Reasonable Date', $req.'|callback_valid_date[date_reasonable]');
+        $this->form_validation->set_rules('date_reasonable', 'Reasonable Date', $nreq.'|callback_valid_date[date_reasonable]');
         $this->form_validation->set_rules('date_delivered', 'Delivered Date', $nreq.'|callback_valid_date[date_delivered]');
 
         if ($this->form_validation->run() == FALSE) {
             $this->render('pledge/create');
         } else {
+        	var_dump($_POST);
         	if($this->input->post('id')){
         		$pledge = $this->Pledge->fetch_by_id($this->input->post('id'));
         	} else {
@@ -105,13 +228,15 @@ class Pledges extends AUTHED_Controller {
 			$pledge->description     = $this->input->post('description');
 			$pledge->value           = $this->input->post('value');
 			$pledge->is_delivered    = $this->input->post('is_delivered');
-			$pledge->date_created    = date(DATETIME_MYSQL);
+			if($pledge_id){
+				$pledge->date_created    = date(DATETIME_MYSQL);
+			}
 			$pledge->date_modified   = date(DATETIME_MYSQL);
 			$pledge->date_promised   = date(DATETIME_MYSQL, strtotime($this->input->post('date_promised')));
 			$pledge->date_reasonable = date(DATETIME_MYSQL, strtotime($this->input->post('date_reasonable')));
 			$pledge->date_delivered  = $delivered;
 			$pledge->save();
-			$this->redirect('/dashboard');
+			$this->redirect('/');
         }
 	}
 

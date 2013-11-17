@@ -30,6 +30,24 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="home_currency">Home Currency</label>
+                <?PHP $home_currency = set_value('home_currency', $user->home_currency); ?>
+                <select name="home_currency" class="form-control">
+                    <?PHP
+                    $currencies = array('USD', 'GBP', 'CAD');
+                    foreach ($currencies as $currency) {
+                        if ($currency == $home_currency) {
+                            $selected = " SELECTED";
+                        } else {
+                            $selected = "";
+                        }
+                        printf("\t<option value=\"%s\"%s>%s</option>\n", $currency, $selected, $currency);
+                    }
+                    ?>
+                </select>
+            </div>
+
 
             <p>Please enter your current password for verification.</p>
             <div class="form-group">

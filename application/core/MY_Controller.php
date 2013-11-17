@@ -56,7 +56,12 @@ class MY_Controller extends CI_Controller {
 	}
 	
 	function navigation_menu(){
-		return $this->load->view("fragments/navigation", $this->viewdata, true);
+		if($this->current_user->logged_in()){
+			return $this->load->view("fragments/navigation", $this->viewdata, true);
+		} else {
+			return $this->load->view("fragments/navigation-nouser", $this->viewdata, true);
+		}
+		
 	}
 	
 	function js_load_anytime(){

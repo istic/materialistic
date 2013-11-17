@@ -7,10 +7,10 @@
   </div>
   <div class="col-sm-6 col-md-6">
   	<h1><a href="<?PHP echo $campaign->URL; ?>"><?PHP echo $campaign->name ?></a></h1>
-  	<p><?PHP echo $campaign->status; ?>, <?PHP echo $campaign->backer_count; ?> backers
+  	<p><?PHP echo $campaign->status; ?>, <?PHP echo number_format($campaign->backer_count); ?> backers
   	raised <?PHP echo view_currency($campaign->currency, $campaign->pledged); ?> of a total of 
   		<?PHP echo view_currency($campaign->currency, $campaign->target); ?> 
-  	(<?PHP printf('%d', ($campaign->pledged/$campaign->target) * 100); ?>% Funded)
+  	(<?PHP number_format(printf('%d', ($campaign->pledged/$campaign->target) * 100)); ?>% Funded)
   	</p>
   	<p><?PHP echo $campaign->date_start; ?> &ndash; <?PHP echo $campaign->date_end; ?></p>
     <?PHP if(isset($action)){ ?>

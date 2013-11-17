@@ -2,6 +2,7 @@
 RewriteEngine On
 RewriteBase /
 RewriteRule static.* - [L]
+RewriteRule favicon.ico - [L]
 RewriteRule assets.* - [L]
 RewriteRule ^index.php(.*)$ - [L]
 

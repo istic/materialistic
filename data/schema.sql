@@ -94,3 +94,11 @@ create table `pledge_log` (
   `entry` varchar(255),
   primary key (id)
 );
+
+
+create table `currency_conversion` (
+  `id` int auto_increment,
+  `date` date,
+  `conversions` mediumtext,
+  primary key (id)
+)

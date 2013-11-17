@@ -2,7 +2,7 @@
 
 <form action="register" method="POST" class="signupform">
     <div class="row contentblock">
-        <div class="span12 whiteblock">
+        <div class="col-md-7 col-md-push-2 whiteblock">
             <?php echo validation_errors(); ?>
 
             Dear <?PHP echo APPNAME ?>,<br/>
@@ -25,6 +25,23 @@
                 which I promise not to tape to my monitor on a postit note. I appreciate you're not demanding
                 I retype that, and have carefully double checked both that and my email address so that I
                 don't have to email support later.</p>
+
+            <p>
+                My preferred currency that I'd like my report in is
+                <?PHP $default_home_currency = set_value('home_currency', "USD"); ?>
+                <select name="home_currency">
+                    <?PHP
+                    $currencies = array('USD', 'GBP', 'CAD');
+                    foreach ($currencies as $home_currency ) {
+                        if ($home_currency == $default_home_currency) {
+                            $selected = " SELECTED";
+                        } else {
+                            $selected = "";
+                        }
+                        printf("\t<option value=\"%s\"%s>%s</option>\n", $home_currency, $selected, $home_currency);
+                    }
+                    ?>
+                </select></p>
 
 
             <p>
