@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Dashboard extends MY_Controller {
+class Dashboard extends AUTHED_Controller {
 
 	public function index()
 	{
@@ -41,18 +41,29 @@ class Dashboard extends MY_Controller {
 	public function category(){
 		$this->viewdata['navsection'] = 'category';
 
+        $this->load->model('Pledge');
+		$this->viewdata['pledges'] = $this->Pledge->pledges_by_user($this->current_user);
+		
 		$this->render("dashboard/category");
 	}
 
 	public function monthly(){
 		$this->viewdata['navsection'] = 'monthly';
 
+
+        $this->load->model('Pledge');
+		$this->viewdata['pledges'] = $this->Pledge->pledges_by_user($this->current_user);
+		
 		$this->render("dashboard/monthly");
 	}
 
 	public function lateness(){
 		$this->viewdata['navsection'] = 'lateness';
 
+
+        $this->load->model('Pledge');
+		$this->viewdata['pledges'] = $this->Pledge->pledges_by_user($this->current_user);
+		
 		$this->render("dashboard/lateness");
 	}
 

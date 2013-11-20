@@ -39,6 +39,14 @@ class Pledge_Object extends My_Object {
 		return "/pledge/id/".$this->id.'/edit';
 	}
 
+	function lateness(){
+		if($this->date_delivered !== '0000-00-00'){
+			return (strtotime($this->date_delivered) - strtotime($this->date_promised)) / (60*60*24*7);
+		} else {
+			return (time() - strtotime($this->date_promised)) / (60*60*24*7);
+		}
+	}
+
 	function is_late(){
 		if($this->date_delivered !== '0000-00-00'){
 			return strtotime($this->date_delivered) > strtotime($this->date_promised);

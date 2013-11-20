@@ -22,7 +22,7 @@ $n = isset($navsection) ? $navsection : '';
       <ul class="nav navbar-nav">
         <li class="<?PHP xs('stats', $n)     ?>"><a href="/"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
         <li class="<?PHP xs('projects', $n)  ?>"><a href="/my/projects"><span class="glyphicon glyphicon-list"></span> Campaigns</a></li>
-        <li class="<?PHP xs('inflight', $n)  ?>"><a href="/my/in-flight"><span class="glyphicon glyphicon-plane"></span> In-Flight</a></li>
+        <?PHP /*<li class="<?PHP xs('inflight', $n)  ?>"><a href="/my/in-flight"><span class="glyphicon glyphicon-plane"></span> In-Flight</a></li> */?>
         <li class="<?PHP xs('category', $n)  ?>"><a href="/my/by-category"><span class="glyphicon glyphicon-book"></span> By Category</a></li>
         <li class="<?PHP xs('monthly', $n)   ?>"><a href="/my/by-month"><span class="glyphicon glyphicon-calendar"></span> Monthly Spend</a></li>
         <li class="<?PHP xs('lateness', $n)  ?>"><a href="/my/by-lateness"><span class="glyphicon glyphicon-time"></span> Lateness</a></li>

@@ -73,7 +73,7 @@ class OpenExchangeRates {
 
 		// Then, convert
 
-		return $USD * $to_value;
+		return round($USD * $to_value);
 
 	}
 }

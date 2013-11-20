@@ -23,7 +23,8 @@
 <!-- Tab panes -->
 <div class="tab-content">
 	<div class="tab-pane active" id="waiting" >
-		<table width="100%" class="table">
+		<table width="100%" class="table tablecloth">
+		<thead>
 			<tr>
 				<th>Name</th>
 				<th>Status</th>
@@ -31,6 +32,8 @@
 				<th>Value</th>
 				<th> </th>
 			</tr>
+		</thead>
+		<tbody>
 			<?PHP 
 			$completed = array();
 			$failed    = array();
@@ -69,10 +72,12 @@
 				</td>
 			</tr>
 			<?PHP } ?>
+			</tbody>
 		</table>
 	</div>
 	<div class="tab-pane" id="complete">
 		<table width="100%" class="table">
+		<thead>
 			<tr>
 				<th>Name</th>
 				<th>Status</th>
@@ -81,6 +86,8 @@
 				<th>Value</th>
 				<th> </th>
 			</tr>
+		</thead>
+		<tbody>
 			<?PHP foreach($completed as $id => $pledge){ ?>
 			<tr>
 				<th><a href="<?PHP echo $pledge->campaign()->URL ?>"><?PHP echo $pledge->campaign()->name ?></a></th>
@@ -107,16 +114,20 @@
 				</td>
 			</tr>
 			<?PHP } ?>
+			</tbody>
 		</table>
 	</div>
 	<div class="tab-pane" id="failed">
 		<table width="100%" class="table">
+		<thead>
 			<tr>
 				<th>Name</th>
 				<th>Status</th>
 				<th>Value</th>
 				<th> </th>
 			</tr>
+		</thead>
+		<tbody>
 			<?PHP foreach($failed as $id => $pledge){ ?>
 			<tr>
 				<th><a href="<?PHP echo $pledge->campaign()->URL ?>"><?PHP echo $pledge->campaign()->name ?></a></th>
@@ -135,6 +146,7 @@
 				</td>
 			</tr>
 			<?PHP } ?>
+		</tbody>
 		</table>
 	</div>
 </div>
