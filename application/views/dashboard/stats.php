@@ -109,7 +109,8 @@ foreach($pledges as $pledge){
         ]);
 
         var options = {
-          title: 'By Count'
+          title: 'By Count',
+          backgroundColor: { fill:'transparent' }
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('by_item'));
@@ -127,7 +128,8 @@ foreach($pledges as $pledge){
         ]);
 
         var options = {
-          title: 'By Value'
+          title: 'By Value',
+          backgroundColor: { fill:'transparent' }
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('by_value'));
@@ -146,7 +148,8 @@ foreach($pledges as $pledge){
         ]);
 
         var options = {
-          title: 'By Value'
+          title: 'By Value',
+          backgroundColor: { fill:'transparent' }
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('by_lateness'));
@@ -173,30 +176,30 @@ foreach($pledges as $pledge){
       <tr>
         <td>Total</td>
         <td><?PHP echo $stats['total']['count'] ?></td>
-        <td><?PHP printf("%s%.2f", $c, $stats['total']['total']) ?></td>
-        <td><?PHP printf("%s%.2f", $c, array_average($stats['total']['totals']))     ?></td>
-        <td><?PHP printf("%s%.2f", $c, array_median($stats['total']['totals']))      ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", $stats['total']['total']),2) ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", array_average($stats['total']['totals'])),2)     ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", array_median($stats['total']['totals'])),2)      ?></td>
       </tr>
       <tr>
         <td>Waiting</td>
         <td><?PHP echo $stats['waiting']['count'] ?></td>
-        <td><?PHP printf("%s%.2f", $c, $stats['waiting']['total']) ?></td>
-        <td><?PHP printf("%s%.2f", $c, array_average($stats['waiting']['totals']))   ?></td>
-        <td><?PHP printf("%s%.2f", $c, array_median($stats['waiting']['totals']))    ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", $stats['waiting']['total']),2) ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", array_average($stats['waiting']['totals'])),2) ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", array_median($stats['waiting']['totals'])),2)  ?></td>
       </tr>
       <tr>
         <td>Delivered</td>
         <td><?PHP echo $stats['delivered']['count'] ?></td>
-        <td><?PHP printf("%s%.2f", $c, $stats['delivered']['total']) ?></td>
-        <td><?PHP printf("%s%.2f", $c, array_average($stats['delivered']['totals'])) ?></td>
-        <td><?PHP printf("%s%.2f", $c, array_median($stats['delivered']['totals']))  ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", $stats['delivered']['total']),2) ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", array_average($stats['delivered']['totals'])),2) ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", array_median($stats['delivered']['totals'])),2)  ?></td>
       </tr>
       <tr>
         <td>Failed</td>
         <td><?PHP echo $stats['failed']['count'] ?></td>
-        <td><?PHP printf("%s%.2f", $c, $stats['failed']['total']) ?></td>
-        <td><?PHP printf("%s%.2f", $c, array_average($stats['failed']['totals']))    ?></td>
-        <td><?PHP printf("%s%.2f", $c, array_median($stats['failed']['totals']))     ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", $stats['failed']['total']),2) ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", array_average($stats['failed']['totals'])),2)    ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", array_median($stats['failed']['totals'])),2)     ?></td>
       </tr>
     </table>
 

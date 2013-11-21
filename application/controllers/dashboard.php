@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Dashboard extends AUTHED_Controller {
+class Dashboard extends MY_Controller {
 
 	public function index()
 	{
@@ -15,6 +15,8 @@ class Dashboard extends AUTHED_Controller {
 	}
 
 	public function projects(){
+		$this->requires_authentication();
+
 		$this->viewdata['navsection'] = 'projects';
 
         $this->load->model('Pledge');
@@ -24,6 +26,8 @@ class Dashboard extends AUTHED_Controller {
 	}
 
 	public function stats(){
+		$this->requires_authentication();
+
 		$this->viewdata['navsection'] = 'stats';
 
         $this->load->model('Pledge');
@@ -33,12 +37,16 @@ class Dashboard extends AUTHED_Controller {
 	}
 
 	public function inflight(){
+		$this->requires_authentication();
+
 		$this->viewdata['navsection'] = 'inflight';
 
 		$this->render("dashboard/inflight");
 	}
 
 	public function category(){
+		$this->requires_authentication();
+
 		$this->viewdata['navsection'] = 'category';
 
         $this->load->model('Pledge');
@@ -48,6 +56,8 @@ class Dashboard extends AUTHED_Controller {
 	}
 
 	public function monthly(){
+		$this->requires_authentication();
+
 		$this->viewdata['navsection'] = 'monthly';
 
 
@@ -58,6 +68,8 @@ class Dashboard extends AUTHED_Controller {
 	}
 
 	public function lateness(){
+		$this->requires_authentication();
+		
 		$this->viewdata['navsection'] = 'lateness';
 
 

@@ -63,6 +63,27 @@ class Pledge_Object extends My_Object {
 		return $this->campaign;
 	}
 
+	function status(){
+		if($this->is_delivered == "Yes"){
+			if( $this->is_late() ){
+				return "Arrived Late";
+			} else {
+				return "Arrived";
+			}
+		} elseif($this->is_delivered == "Failed"){
+			return 'Failed';
+			continue;
+		} else {
+			if( $this->is_late() ){
+				return "In Progress, but Late";
+			} else {
+				return "In Progress";
+			}
+		}
+
+
+	}
+
 	function convert_to_currency($currency){
 		$this->CI->load->library("openexchangerates");
 		if(  strtotime($this->date_ended) > time() || $this->date_ended == '0000-00-00' ){
