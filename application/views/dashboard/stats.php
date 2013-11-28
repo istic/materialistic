@@ -25,20 +25,22 @@ $stats = array(
 );
 
 $chart_by_count = array(
-  'Waiting'   => 0,
   'Delivered' => 0,
+  'Waiting'   => 0,
   'Failed'    => 0
 );
 $chart_by_value = array(
-  'Waiting'   => 0,
   'Delivered' => 0,
+  'Waiting'   => 0,
   'Failed'    => 0
 );
 $chart_by_lateness = array(
   'Delivered On Time'  => 0,
-  'In Progress'        => 0,
   'Delivered Late'     => 0,
+
+  'In Progress'        => 0,
   'In Progress - Late' => 0,
+
   'Failed'             => 0
 );
 
@@ -110,7 +112,8 @@ foreach($pledges as $pledge){
 
         var options = {
           title: 'By Count',
-          backgroundColor: { fill:'transparent' }
+          backgroundColor: { fill:'transparent' },
+          colors: ['green', 'blue', 'red']
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('by_item'));
@@ -129,7 +132,8 @@ foreach($pledges as $pledge){
 
         var options = {
           title: 'By Value',
-          backgroundColor: { fill:'transparent' }
+          backgroundColor: { fill:'transparent' },
+          colors: ['green', 'blue', 'red']
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('by_value'));
@@ -149,7 +153,8 @@ foreach($pledges as $pledge){
 
         var options = {
           title: 'By Value',
-          backgroundColor: { fill:'transparent' }
+          backgroundColor: { fill:'transparent' },
+          colors: ['green', 'darkgreen', 'blue', 'darkblue', 'red']
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('by_lateness'));
