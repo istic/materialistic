@@ -16,9 +16,15 @@ foreach($pledges as $pledge){
 		$highest_month = $date_ended;
 	}
 
-	$month = date("M Y", $date_ended);
+	$month = date("Y-m", $date_ended);
 	if(!isset($months[$month])){
-		$months[$month] = array('arrived' => 0, 'waiting' => 0, 'some' => 0, 'failed' => 0);
+		$months[$month] = array(
+			'legend' => date("M Y", $date_ended), 
+			'arrived' => 0, 
+			'waiting' => 0, 
+			'some' => 0, 
+			'failed' => 0
+		);
 	}
 	$value = $pledge->convert_to_currency($current_user->home_currency);
 	switch ($pledge->is_delivered){
@@ -40,18 +46,67 @@ foreach($pledges as $pledge){
 }
 
 ?>
+
+<script type="text/javascript">
+	google.load("visualization", "1", {packages:["corechart"]});
+	google.setOnLoadCallback(drawChart);
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable([
+			['Month', 'Delivered', 'Some', 'Waiting', 'Failed', { role: 'annotation' } ],
+<?PHP
+		$d = $lowest_month;
+		while($d < $highest_month){
+			$key = date("Y-m", $d);
+			if(isset($months[$key])){
+				$data = $months[$key];
+			} else {
+				$data = array(
+					'legend' => date("M Y", $d), 
+					'arrived' => 0, 
+					'waiting' => 0, 
+					'some' => 0, 
+					'failed' => 0
+				);
+			}
+			//foreach($months as $month => $data){
+			echo "\t\t\t['".$data['legend']."', ".$data['arrived'].", ".$data['some'].", ".$data['waiting'].", ".$data['failed'].", ''],\n";
+			$d = strtotime("+1 month", $d);
+		}
+			?>
+		]);
+
+		var options = {
+			title: 'Lateness',
+
+			isStacked: true,
+			bar: { groupWidth: '75%' },
+			legend: { position: 'top', maxLines: 3 },
+
+			animation: { duration : 60 },
+			backgroundColor: { fill:'transparent' },
+			colors: ['green', 'orange', 'blue', 'red']
+		};
+
+		var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+		chart.draw(data, options);
+	}
+</script>
 <div class="row">
 <div class="col-md-12">
 <ul class="nav nav-tabs">
-  <li><a href="#graphs" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Graphs</a></li>
-  <li class="active"><a href="#data"   data-toggle="tab" ><span class="glyphicon glyphicon-list"></span> Data</a></li>
+  <li class="active"><a href="#graphs" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Graphs</a></li>
+  <li><a href="#data"   data-toggle="tab" ><span class="glyphicon glyphicon-list"></span> Data</a></li>
 </ul>
 <!-- Tab panes -->
 <div class="tab-content">
-	<div class="tab-pane" id="graphs">
-	<div style="padding: 2em;" class="text-center"><img src="/assets/img/underconstruction.gif"/></div>
+	<div class="tab-pane active" id="graphs">
+
+<div class="col-md-12" id="chart_div" style="height: 800px;">
+
+</div>
+
 	</div>
-	<div class="tab-pane active" id="data" >
+	<div class="tab-pane" id="data" >
 		<table width="100%" class="table tablecloth text-right">
 		<thead>
 			<tr class="text-right">
@@ -67,7 +122,7 @@ foreach($pledges as $pledge){
 		<?PHP 
 		$d = $lowest_month;
 		while($d < $highest_month){
-			$key = date("M Y", $d);
+			$key = date("Y-m", $d);
 			if(isset($months[$key])){ ?>
 				<tr>
 					<th><?PHP echo date("F Y", $d);          ?></th>
