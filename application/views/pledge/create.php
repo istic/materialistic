@@ -58,17 +58,17 @@
 			</div>
 			<div class="form-group <?PHP echo form_error('date_promised') ? 'has-error' : '' ?>">
 				<label class="control-label" id="date_promised">Promised Delivery Date</label>
-				<input type="text" id="date_promised" name="date_promised" class="form-control datepicker" value="<?php echo set_value('date_promised', $pledge->date_promised); ?>">
+				<input type="text" id="date_promised" name="date_promised" class="form-control datepicker" value="<?php echo set_value('date_promised', $pledge->date_promised_if_exists() ); ?>">
 				<span class="help-block">Original delivery date according to pledge box</span>
 			</div>
 			<div class="form-group <?PHP echo form_error('date_reasonable') ? 'has-error' : '' ?>">
 				<label class="control-label" id="date_reasonable"><q>Reasonable</q> Delivery Date</label>
-				<input type="text" id="date_reasonable" name="date_reasonable" class="form-control datepicker" value="<?php echo set_value('date_reasonable', $pledge->date_reasonable); ?>">
+				<input type="text" id="date_reasonable" name="date_reasonable" class="form-control datepicker" value="<?php echo set_value('date_reasonable', $pledge->date_reasonable_if_exists() ); ?>">
 				<span class="help-block">Given stretch-goals and such, this is the point you would consider the delivery 'late'</span>
 			</div>
 			<div class="form-group <?PHP echo form_error('date_delivered') ? 'has-error' : '' ?>">
 				<label class="control-label" id="date_delivered">Delivery Date</label>
-				<input type="text" id="date_delivered" name="date_delivered" class="form-control datepicker" value="<?php echo set_value('date_delivered', $pledge->date_delivered); ?>">
+				<input type="text" id="date_delivered" name="date_delivered" class="form-control datepicker" value="<?php echo set_value('date_delivered', $pledge->date_delivered_if_exists()); ?>">
 				<span class="help-block">Date you recieved everything, if you checked "Yes" above (Optional).</span>
 			</div>
 			<div class="col-md-6 col-md-push-6">

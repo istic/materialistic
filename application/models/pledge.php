@@ -47,6 +47,30 @@ class Pledge_Object extends My_Object {
 		}
 	}
 
+	function date_delivered_if_exists(){
+		if($this->date_delivered !== '0000-00-00'){
+			return $this->date_delivered;
+		} else {
+			return '';
+		}
+	}
+
+	function date_reasonable_if_exists(){
+		if($this->date_delivered !== '0000-00-00'){
+			return $this->date_delivered;
+		} else {
+			return '';
+		}
+	}
+
+	function date_promised_if_exists(){
+		if($this->date_promised !== '0000-00-00'){
+			return $this->date_promised;
+		} else {
+			return '';
+		}
+	}
+
 	function is_late(){
 		if($this->date_delivered !== '0000-00-00'){
 			return strtotime($this->date_delivered) > strtotime($this->date_promised);

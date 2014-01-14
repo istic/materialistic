@@ -165,7 +165,7 @@ class Pledges extends AUTHED_Controller {
         $this->load->library('form_validation');
 
         $pledge_id = $this->input->get_post('id', TRUE);
-        $pledge = false;
+        $pledge = new Pledge_Object;
         if($pledge_id){
         	$pledge = $this->Pledge->fetch_by_id($pledge_id);
         	$campaign_id = $pledge->campaign_id;
@@ -219,7 +219,7 @@ class Pledges extends AUTHED_Controller {
         	if($this->input->post('date_delivered')){
         		$delivered = date(DATETIME_MYSQL, strtotime($this->input->post('date_delivered')));
         	} else {
-        		$delivered = '';
+        		$delivered = false;
         	}
 
 			$pledge->campaign_id     = $campaign->id;
@@ -232,8 +232,18 @@ class Pledges extends AUTHED_Controller {
 				$pledge->date_created    = date(DATETIME_MYSQL);
 			}
 			$pledge->date_modified   = date(DATETIME_MYSQL);
-			$pledge->date_promised   = date(DATETIME_MYSQL, strtotime($this->input->post('date_promised')));
-			$pledge->date_reasonable = date(DATETIME_MYSQL, strtotime($this->input->post('date_reasonable')));
+			if($this->input->post('date_promised')){
+				$pledge->date_promised = date(DATETIME_MYSQL, strtotime($this->input->post('date_promised')));
+			} else {
+				$pledge->date_promised = false;
+			}
+
+			if($this->input->post('date_reasonable')){
+				$pledge->date_reasonable = date(DATETIME_MYSQL, strtotime($this->input->post('date_reasonable')));
+			} else {
+				$pledge->date_reasonable = false;
+			}
+
 			$pledge->date_delivered  = $delivered;
 			$pledge->save();
 			$this->redirect('/');

@@ -1,3 +1,4 @@
+<div class="row">
 <h1>Possible Matches</h1>
 
 <?PHP if(count($campaigns) == 0){ ?>
@@ -29,4 +30,6 @@
 		include(VIEWPATH.'fragments/campaign_panel.php');
 	}
 
-} 
+}
+?>
+</div>

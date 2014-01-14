@@ -69,7 +69,8 @@ class Dashboard extends MY_Controller {
 
 	public function lateness(){
 		$this->requires_authentication();
-		
+
+	
 		$this->viewdata['navsection'] = 'lateness';
 
 
