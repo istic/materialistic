@@ -66,8 +66,8 @@ foreach($pledges as $pledge){
     $stats['waiting']['total'] += $value;
     $stats['waiting']['totals'][] = $value;
 
-    $chart_by_count['Delivered']++;
-    $chart_by_value['Delivered'] += $value;
+    $chart_by_count['Waiting']++;
+    $chart_by_value['Waiting'] += $value;
 
     if($pledge->is_late()){
       $chart_by_lateness['Delivered Late']++;
@@ -80,8 +80,8 @@ foreach($pledges as $pledge){
     $stats['delivered']['total'] += $value;
     $stats['delivered']['totals'][] = $value;
 
-    $chart_by_count['Waiting']++;
-    $chart_by_value['Waiting'] += $value;
+    $chart_by_count['Delivered']++;
+    $chart_by_value['Delivered'] += $value;
 
 
     if( $pledge->is_late() ){
