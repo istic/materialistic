@@ -32,6 +32,18 @@ class Pledge_Object extends My_Object {
 	protected $model = 'Pledge';
 	protected $campaign = false;
 
+	public function deadline(){
+		if(REASONABLE){
+			if($this->date_reasonable_if_exists()){
+				return $this->date_reasonable;
+			} else {
+				return $this->date_promised;
+			}
+		} else {
+			return $this->date_promised;
+		}
+	}
+
 	function view_url(){
 		return "/pledge/id/".$this->id;
 	}
@@ -41,9 +53,9 @@ class Pledge_Object extends My_Object {
 
 	function lateness(){
 		if($this->date_delivered !== '0000-00-00'){
-			return (strtotime($this->date_delivered) - strtotime($this->date_promised)) / (60*60*24*7);
+			return (strtotime($this->date_delivered) - strtotime($this->deadline())) / (60*60*24*7);
 		} else {
-			return (time() - strtotime($this->date_promised)) / (60*60*24*7);
+			return (time() - strtotime($this->deadline())) / (60*60*24*7);
 		}
 	}
 
@@ -56,8 +68,8 @@ class Pledge_Object extends My_Object {
 	}
 
 	function date_reasonable_if_exists(){
-		if($this->date_delivered !== '0000-00-00'){
-			return $this->date_delivered;
+		if($this->date_reasonable !== '0000-00-00'){
+			return $this->date_reasonable;
 		} else {
 			return '';
 		}
@@ -73,9 +85,9 @@ class Pledge_Object extends My_Object {
 
 	function is_late(){
 		if($this->date_delivered !== '0000-00-00'){
-			return strtotime($this->date_delivered) > strtotime($this->date_promised);
+			return strtotime($this->date_delivered) > strtotime($this->deadline());
 		} else {
-			return time() > strtotime($this->date_promised);
+			return time() > strtotime($this->deadline());
 		}
 	}
 

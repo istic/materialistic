@@ -29,6 +29,11 @@ $n = isset($navsection) ? $navsection : '';
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
+      <li class="<?PHP xs(true, !REASONABLE)     ?>"><a href="/dashboard/reasonable?return=<?PHP echo urlencode(current_url()) ?>" title="Click to toggle"><span class="glyphicon glyphicon-time"></span>
+      <?PHP
+        echo REASONABLE ? 'Using Reasonable times' : "Using original times";
+      ?></a></li>
+      
         <li class="<?PHP xs('account', $n)     ?>"><a href="/auth/account"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
         <li><a href="/auth/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
       </ul>

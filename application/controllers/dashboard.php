@@ -25,6 +25,12 @@ class Dashboard extends MY_Controller {
 		$this->render('dashboard/projects');
 	}
 
+	public function reasonable(){
+		$reasonable = $this->session->userdata('reasonable_mode');
+		$this->session->set_userdata('reasonable_mode', !$reasonable);
+		redirect($this->input->get('return'));
+	}
+
 	public function stats(){
 		$this->requires_authentication();
 

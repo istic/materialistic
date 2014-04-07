@@ -29,6 +29,7 @@
 				<th>Name</th>
 				<th>Status</th>
 				<th>Promised</th>
+				<th>Reasonable</th>
 				<th>Value</th>
 				<th> </th>
 			</tr>
@@ -55,7 +56,8 @@
 					echo "In Progress";
 				}
 				?></td>
-				<td><?PHP echo $pledge->date_promised ?></td>
+				<td><?PHP echo $pledge->date_promised_if_exists() ?></td>
+				<td><?PHP echo $pledge->date_reasonable_if_exists() ?></td>
 				<td class="text-right"><?PHP 
 					$local = $pledge->convert_to_currency($current_user->home_currency);
 					echo view_currency($current_user->home_currency, $local);
@@ -82,6 +84,7 @@
 				<th>Name</th>
 				<th>Status</th>
 				<th>Promised</th>
+				<th>Reasonable</th>
 				<th>Delivered</th>
 				<th>Value</th>
 				<th> </th>
@@ -98,7 +101,8 @@
 					echo "Delivered on Time";
 				}
 				?></td>
-				<td><?PHP echo $pledge->date_promised ?></td>
+				<td><?PHP echo $pledge->date_promised_if_exists() ?></td>
+				<td><?PHP echo $pledge->date_reasonable_if_exists() ?></td>
 				<td><?PHP echo $pledge->date_delivered ?></td>
 				<td class="text-right"><?PHP 
 					$local = $pledge->convert_to_currency($current_user->home_currency);
@@ -122,7 +126,8 @@
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Status</th>
+				<th>Promised</th>
+				<th>Reasonable</th>
 				<th>Value</th>
 				<th> </th>
 			</tr>
@@ -131,7 +136,10 @@
 			<?PHP foreach($failed as $id => $pledge){ ?>
 			<tr>
 				<th><a href="<?PHP echo $pledge->campaign()->URL ?>"><?PHP echo $pledge->campaign()->name ?></a></th>
-				<td><?PHP echo $pledge->date_promised ?></td>
+				
+				<td><?PHP echo $pledge->date_promised_if_exists() ?></td>
+				<td><?PHP echo $pledge->date_reasonable_if_exists() ?></td>
+
 				<td class="text-right"><?PHP 
 					$local = $pledge->convert_to_currency($current_user->home_currency);
 					echo view_currency($current_user->home_currency, $local);

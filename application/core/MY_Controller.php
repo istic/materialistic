@@ -25,7 +25,8 @@ class MY_Controller extends CI_Controller {
 		
         $this->load->model("User");
         $this->load->model("Notification");
-		
+
+        define('REASONABLE', $this->session->userdata('reasonable_mode'));
 		
 		$this->viewdata = array(
 			'title'    => "",
