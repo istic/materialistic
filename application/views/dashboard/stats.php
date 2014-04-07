@@ -51,7 +51,7 @@ foreach($pledges as $pledge){
   $stats['total']['total'] += $value;
   $stats['total']['totals'][] = $value;
 
-  if($pledge->is_delivered == "Failed"){
+  if($pledge->is_delivered == "Failed"){ // FAILED
     $stats['failed']['count']++;
     $stats['failed']['total'] += $value;
     $stats['failed']['totals'][] = $value;
@@ -61,7 +61,7 @@ foreach($pledges as $pledge){
 
     $chart_by_lateness['Failed']++;
 
-  } elseif($pledge->is_delivered != "Yes"){
+  } elseif($pledge->is_delivered != "Yes"){ // NOT DELIVERED
     $stats['waiting']['count']++;
     $stats['waiting']['total'] += $value;
     $stats['waiting']['totals'][] = $value;
@@ -69,13 +69,13 @@ foreach($pledges as $pledge){
     $chart_by_count['Waiting']++;
     $chart_by_value['Waiting'] += $value;
 
-    if($pledge->is_late()){
-      $chart_by_lateness['Delivered Late']++;
+    if( $pledge->is_late() ){
+      $chart_by_lateness['In Progress - Late']++;
     } else {
-      $chart_by_lateness['Delivered On Time']++;
+      $chart_by_lateness['In Progress']++;
     }
 
-  } else {
+  } else { // DELIVERED
     $stats['delivered']['count']++;
     $stats['delivered']['total'] += $value;
     $stats['delivered']['totals'][] = $value;
@@ -83,11 +83,10 @@ foreach($pledges as $pledge){
     $chart_by_count['Delivered']++;
     $chart_by_value['Delivered'] += $value;
 
-
-    if( $pledge->is_late() ){
-      $chart_by_lateness['In Progress - Late']++;
+    if($pledge->is_late()){
+      $chart_by_lateness['Delivered Late']++;
     } else {
-      $chart_by_lateness['In Progress']++;
+      $chart_by_lateness['Delivered On Time']++;
     }
 
   }
@@ -152,7 +151,7 @@ foreach($pledges as $pledge){
         ]);
 
         var options = {
-          title: 'By Value',
+          title: 'Lateness by Count',
           backgroundColor: { fill:'transparent' },
           colors: ['green', 'darkgreen', 'blue', 'darkblue', 'red']
         };
