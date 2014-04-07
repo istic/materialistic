@@ -7,3 +7,4 @@ localconfig
 logs
 *.DS_Store*
 *swp
+.vagrant
