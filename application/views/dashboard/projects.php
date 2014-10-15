@@ -28,6 +28,7 @@
 			<tr>
 				<th>Name</th>
 				<th>Status</th>
+				<th>Date</th>
 				<th>Promised</th>
 				<th>Reasonable</th>
 				<th>Value</th>
@@ -56,6 +57,7 @@
 					echo "In Progress";
 				}
 				?></td>
+				<td><?PHP echo date("Y-m-d", strtotime($pledge->campaign()->date_end)) ?></td>
 				<td><?PHP echo $pledge->date_promised_if_exists() ?></td>
 				<td><?PHP echo $pledge->date_reasonable_if_exists() ?></td>
 				<td class="text-right"><?PHP 

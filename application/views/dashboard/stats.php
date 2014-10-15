@@ -44,6 +44,25 @@ $chart_by_lateness = array(
   'Failed'             => 0
 );
 
+
+$howlate = array(
+  'Days'         => 0,
+  'Weeks'        => 0,
+  'Months'       => 0,
+  'More Months'  => 0,
+  'More Months'  => 365/2,
+  'Years'        => 0
+);
+
+$define_howlate = array(
+  'Days'         => 14,
+  'Weeks'        => 28,
+  'Months'       => 90,
+  'More Months'  => 365/2,
+  'Less than a Year'  => 365,
+  'Years'        => 365*5
+);
+
 foreach($pledges as $pledge){
   $value = $pledge->convert_to_currency($current_user->home_currency);
 
@@ -91,8 +110,20 @@ foreach($pledges as $pledge){
 
   }
 
+  if($pledge->is_late() && $pledge->is_delivered !== "Failed"){
+      $days = $pledge->lateness(60*60*24);
+      foreach($define_howlate as $index => $boundry){
+        if($days < $boundry){
+          //print $pledge->campaign()->name.' '.$days.'<br/>';
+          $howlate[$index]++;
+          break;
+        }
+      }
+  }
+
 
 }
+
 ?>
 
 <script type="text/javascript">
@@ -159,6 +190,25 @@ foreach($pledges as $pledge){
         var chart = new google.visualization.PieChart(document.getElementById('by_lateness'));
         chart.draw(data, options);
 
+        // Chart by How Late
+
+        var data = google.visualization.arrayToDataTable([
+          ['Status', 'Value'],
+          <?PHP 
+          foreach($howlate as $section => $value){
+            echo "['$section',     $value],\n";
+          }
+          ?>
+        ]);
+
+        var options = {
+          title: 'Lateness',
+          backgroundColor: { fill:'transparent' },
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('how_late'));
+        chart.draw(data, options);
+
       }
     </script>
 
@@ -206,7 +256,12 @@ foreach($pledges as $pledge){
         <td><?PHP echo $c.number_format(sprintf("%.2f", array_median($stats['failed']['totals'])),2)     ?></td>
       </tr>
     </table>
+  </div>
 
+</div>
+<div class="row">
+  <div class="col-sm-6 col-md-6" style="height: 300px;" id="how_late"></div>
+  <div class="col-sm-6 col-md-6">
     <table class="table">
       <tr>
         <th>Status</th>
