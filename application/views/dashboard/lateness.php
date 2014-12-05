@@ -39,7 +39,7 @@ $c = currency_symbol($current_user->home_currency);
 
         var options = {
           title: 'Lateness',
-          hAxis: {title: 'Time Allocated To Deliver (weeks)'},
+          hAxis: {title: 'Time Allocated To Deliver (weeks)', logScale: true },
           vAxis: {title: 'Lateness (weeks)'},
           bubble: {textStyle: {fontSize: 11, color: 'none'}, opacity : .5 },
 

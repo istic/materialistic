@@ -38,10 +38,10 @@ $chart_by_lateness = array(
   'Delivered On Time'  => 0,
   'Delivered Late'     => 0,
 
-  'In Progress'        => 0,
   'In Progress - Late' => 0,
+  'In Progress'        => 0,
 
-  'Failed'             => 0
+//  'Failed'             => 0
 );
 
 
@@ -50,7 +50,6 @@ $howlate = array(
   'Weeks'        => 0,
   'Months'       => 0,
   'More Months'  => 0,
-  'More Months'  => 365/2,
   'Years'        => 0
 );
 
@@ -78,7 +77,7 @@ foreach($pledges as $pledge){
     $chart_by_count['Failed']++;
     $chart_by_value['Failed'] += $value;
 
-    $chart_by_lateness['Failed']++;
+    //$chart_by_lateness['Failed']++;
 
   } elseif($pledge->is_delivered != "Yes"){ // NOT DELIVERED
     $stats['waiting']['count']++;
@@ -112,11 +111,12 @@ foreach($pledges as $pledge){
 
   if($pledge->is_late() && $pledge->is_delivered !== "Failed"){
       $days = $pledge->lateness(60*60*24);
+      $counted = False;
       foreach($define_howlate as $index => $boundry){
-        if($days < $boundry){
+        if($days < $boundry and !$counted){
           //print $pledge->campaign()->name.' '.$days.'<br/>';
           $howlate[$index]++;
-          break;
+          $counted = True;
         }
       }
   }
