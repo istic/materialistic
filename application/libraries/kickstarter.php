@@ -69,4 +69,28 @@ class Kickstarter {
 		$campaign->save();
 		return $campaign;
 	}
+
+
+	function project_page($url){
+		$cachefile = '/tmp/materialistic-ks-'.md5($url);
+		if(file_exists($cachefile)){
+			return file_get_contents($cachefile);
+		}
+		$data = file_get_contents($url);
+		file_put_contents($cachefile, $data);
+
+		return $data;
+	}
+
+	function campaign_data($url){
+		$page = $this->project_page($url);
+		$res = preg_match_all('/window.current_project = "(.*)"/', $page, $matches);
+		
+		if(!count($matches)){
+
+			return false;
+		}
+		$data = html_entity_decode($matches[1][0]);
+		return json_decode($data);
+	}
 }

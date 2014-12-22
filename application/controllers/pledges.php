@@ -163,6 +163,7 @@ class Pledges extends AUTHED_Controller {
 		$this->load->model('Campaign');
 		$this->load->model('Pledge');
         $this->load->library('form_validation');
+        $this->load->library('kickstarter');
 
         $pledge_id = $this->input->get_post('id', TRUE);
         $pledge = new Pledge_Object;
@@ -192,6 +193,11 @@ class Pledges extends AUTHED_Controller {
 			}
 		} else {
 			return $this->error(404);
+		}
+
+		$campaign_data = $this->kickstarter->campaign_data($campaign->URL);
+		if($campaign_data){
+			$this->viewdata['rewards'] = $campaign_data->rewards;
 		}
 
 		$req = 'required|trim|xss_clean';
