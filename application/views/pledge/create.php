@@ -7,10 +7,11 @@
 				<div class="alert alert-danger"><?PHP echo $error ?></div>
 				<?PHP
 			}
+			$create = $pledge->id ? False : True;
              echo validation_errors();
 		?>
 
-		<h1>Create new Pledge</h1>
+		<h1><?PHP echo $create ? 'Create new' : 'Edit' ?> Pledge</h1>
 
 		<form role="form" method="POST" action='/pledges/create'>
 			<input type="hidden" id="campaign_id" name="campaign_id" class="form-control" value="<?php echo $campaign->id; ?>">
@@ -91,6 +92,9 @@
 			</div>
 			<div class="col-md-6 col-md-push-6">
 				<input type="submit" class="btn btn-default btn-block" value="Register Pledge">
+			<?PHP if(!$delete){ ?> 
+				<input type="submit" class="btn btn-block btn-warning" value="Delete Pledge" name="delete">
+			<?PHP } ?>
 			</div>
 
 		</form>

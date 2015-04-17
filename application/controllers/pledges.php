@@ -176,6 +176,10 @@ class Pledges extends AUTHED_Controller {
         	if($pledge->user_id != $this->current_user->id){
         		return $this->error(404);
         	}
+		if($this->input->get_post('delete', TRUE)){
+			$pledge->delete();
+			return $this->redirect('/my/projects');
+		}
         } else {
 	       	$campaign_id = $this->input->get_post('campaign_id', TRUE);
 	       	if(!$campaign_id){
@@ -215,7 +219,6 @@ class Pledges extends AUTHED_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->render('pledge/create');
         } else {
-        	var_dump($_POST);
         	if($this->input->post('id')){
         		$pledge = $this->Pledge->fetch_by_id($this->input->post('id'));
         	} else {

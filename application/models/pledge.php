@@ -133,4 +133,10 @@ class Pledge_Object extends My_Object {
 		}
 		return $this->CI->openexchangerates->convert($this->value, $this->campaign()->currency, $currency, $date);
 	}
+
+	function delete(){
+		$this->CI->db->where('id', $this->id);
+		$this->CI->db->delete('pledge');
+		return true;
+	}
 }
