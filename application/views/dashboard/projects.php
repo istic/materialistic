@@ -28,9 +28,8 @@
 			<tr>
 				<th>Name</th>
 				<th>Status</th>
-				<th>Date</th>
-				<th>Promised</th>
-				<th>Reasonable</th>
+				<th>Concluded</th>
+				<th>Deadline (<?PHP echo REASONABLE ? 'Reasonable' : 'Original' ?>)</th>
 				<th>Value</th>
 				<th> </th>
 			</tr>
@@ -51,15 +50,16 @@
 			<tr>
 				<th><a href="<?PHP echo $pledge->campaign()->URL ?>"><?PHP echo $pledge->campaign()->name ?></a></th>
 				<td><?PHP 
-				if( $pledge->is_late() ){
-					echo "In Progress, but Late";
+				if( strtotime($pledge->campaign()->date_end) > time() ){
+					echo "Campaigning";
+				} elseif( $pledge->is_late() ){
+					echo "Late";
 				} else {
-					echo "In Progress";
+					echo "Patience";
 				}
 				?></td>
 				<td><?PHP echo date("Y-m-d", strtotime($pledge->campaign()->date_end)) ?></td>
-				<td><?PHP echo $pledge->date_promised_if_exists() ?></td>
-				<td><?PHP echo $pledge->date_reasonable_if_exists() ?></td>
+				<td><?PHP echo $pledge->deadline() ?></td>
 				<td class="text-right"><?PHP 
 					$local = $pledge->convert_to_currency($current_user->home_currency);
 					echo view_currency($current_user->home_currency, $local);
@@ -85,8 +85,7 @@
 			<tr>
 				<th>Name</th>
 				<th>Status</th>
-				<th>Promised</th>
-				<th>Reasonable</th>
+				<th>Deadline (<?PHP echo REASONABLE ? 'Reasonable' : 'Original' ?>)</th>
 				<th>Delivered</th>
 				<th>Value</th>
 				<th> </th>
@@ -103,8 +102,7 @@
 					echo "Delivered on Time";
 				}
 				?></td>
-				<td><?PHP echo $pledge->date_promised_if_exists() ?></td>
-				<td><?PHP echo $pledge->date_reasonable_if_exists() ?></td>
+				<td><?PHP echo $pledge->deadline() ?></td>
 				<td><?PHP echo $pledge->date_delivered ?></td>
 				<td class="text-right"><?PHP 
 					$local = $pledge->convert_to_currency($current_user->home_currency);
