@@ -85,12 +85,19 @@ class Kickstarter {
 	function campaign_data($url){
 		$page = $this->project_page($url);
 		$res = preg_match_all('/window.current_project = "(.*)"/', $page, $matches);
-		
 		if(!count($matches)){
 
 			return false;
 		}
-		$data = html_entity_decode($matches[1][0]);
+		$data = html_entity_decode(stripslashes($matches[1][0]));
+		#$data = $matches[1][0];
+		/*$v8 = new V8Js();
+		$js = 'var json = JSON.stringify('.$data.');';
+		try {
+			$json - $v8->executeString($js);
+		} catch (V8JsException $e) {
+			 var_dump($e);
+		}*/
 		return json_decode($data);
 	}
 }
