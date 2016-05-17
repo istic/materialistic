@@ -44,22 +44,23 @@ $chart_by_lateness = array(
 //  'Failed'             => 0
 );
 
+$lateness_by_category = array();
+$cost_by_category = array();
 
 $howlate = array(
-  'Days'         => 0,
-  'Weeks'        => 0,
-  'Months'       => 0,
-  'More Months'  => 0,
-  'Years'        => 0
+  'Days (0-14)'        => 0,
+  'Weeks (2-6)'        => 0,
+  'Months (2-6)'       => 0,
+  'More Months (6-14)' => 0,
+  'Years'              => 0
 );
 
 $define_howlate = array(
-  'Days'         => 14,
-  'Weeks'        => 28,
-  'Months'       => 90,
-  'More Months'  => 365/2,
-  'Less than a Year'  => 365,
-  'Years'        => 365*5
+  'Days (0-14)'        => 14,
+  'Weeks (2-6)'        => 42,
+  'Months (2-6)'       => 180,
+  'More Months (6-14)' => 420,
+  'Years'              => 365*15
 );
 
 foreach($pledges as $pledge){
@@ -109,6 +110,8 @@ foreach($pledges as $pledge){
 
   }
 
+  // Chart by lateness
+
   if($pledge->is_late() && $pledge->is_delivered !== "Failed"){
       $days = $pledge->lateness(60*60*24);
       $counted = False;
@@ -122,6 +125,39 @@ foreach($pledges as $pledge){
   }
 
 
+  // Table of average lateness (days)
+
+  $category = $pledge->campaign()->category;
+  if(!isset($lateness_by_category[$category])) {
+    $lateness_by_category[$category] = array(
+      'count' => 0,
+      'sum'   => 0,
+    );
+  }
+  $lateness_by_category[$category]['count']++;
+  $lateness_by_category[$category]['sum'] += abs($pledge->lateness(60*60*24));
+
+  // Table of average cost (days)
+
+  if(!isset($cost_by_category[$category])){
+    $cost_by_category[$category] = array(
+      'count' => 0,
+      'sum'   => 0,
+    );
+  }
+  $cost_by_category[$category]['count']++;
+  $cost_by_category[$category]['sum'] += abs($value);
+
+}
+
+$chart_late_by_category = array();
+foreach($lateness_by_category as $category => $data){
+  $chart_late_by_category[$category] = $data['sum'] / $data['count'];
+}
+
+$chart_cost_by_category = array();
+foreach($cost_by_category as $category => $data){
+  $chart_cost_by_category[$category] = $data['sum'] / $data['count'];
 }
 
 ?>
@@ -271,6 +307,37 @@ foreach($pledges as $pledge){
       <tr>
         <td><?PHP echo $status ?></td>
         <td><?PHP echo $count  ?></td>
+      </tr>
+      <?PHP } ?>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 col-md-6">
+    <table class="table">
+      <tr>
+        <th>Category</th>
+        <th>Count</th>
+      </tr>
+      <?PHP foreach($chart_cost_by_category as $category => $value){ ?>
+      <tr>
+        <td><?PHP echo $category ?></td>
+        <td><?PHP echo $c.number_format(sprintf("%.2f", $value),2)   ?></td>
+      </tr>
+      <?PHP } ?>
+    </table>
+  </div>
+  <div class="col-sm-6 col-md-6">
+    <table class="table">
+      <tr>
+        <th>Category</th>
+        <th>Average Lateness (days)</th>
+      </tr>
+      <?PHP foreach($chart_late_by_category as $category => $value){ ?>
+      <tr>
+        <td><?PHP echo $category ?></td>
+        <td><?PHP echo number_format(sprintf("%.2f", $value),2)   ?></td>
       </tr>
       <?PHP } ?>
     </table>

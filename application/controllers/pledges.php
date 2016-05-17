@@ -5,7 +5,7 @@ class Pledges extends AUTHED_Controller {
 
 
 	public function from_url(){
-		$url = $this->input->post('url');
+		$url = $this->input->get_post('url');
 		$purl = parse_url($url);
 		switch(isset($purl['host']) ? $purl['host'] : false){
 			case "www.kickstarter.com":

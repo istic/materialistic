@@ -2,7 +2,7 @@
 
 class Campaigns extends AUTHED_Controller {
 
-	function create(){
+	public function create(){
         $this->load->library('form_validation');
         $this->load->model('Campaign');
 
@@ -17,6 +17,13 @@ class Campaigns extends AUTHED_Controller {
         $this->form_validation->set_rules('country', 'Country', 'required|trim|xss_clean|exact_length[2]');
 
         if ($this->form_validation->run() == FALSE) {
+        	$validator =& _get_validation_object();
+			$error_messages = $this->form_validation->error_array();
+			if(isset($error_messages['url']) && $error_messages['url'] == 'The URL field must contain a unique value.'){
+				$campaign = $this->Campaign->fetch_by_column("url", $this->input->post('url'));
+				$this->redirect('/pledges/create?campaign='.$campaign->id);
+				return;
+			}
             $this->render('campaign/create');
         } else {
 	        $campaign = new Campaign_Object();
@@ -43,7 +50,7 @@ class Campaigns extends AUTHED_Controller {
 			$campaign->date_created  = date(DATETIME_MYSQL);
 			$campaign->date_modified = date(DATETIME_MYSQL);
 			$campaign->save();
-			$this->redirect('/pledges/create?campaign='.$campaigns->id);
+			$this->redirect('/pledges/create?campaign='.$campaign->id);
 		}
 
 		
