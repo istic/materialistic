@@ -21,10 +21,6 @@
     <!-- Google JSApi -->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-    <!-- Date Pickler -->
-    <link href="/assets/libraries/datepicker/css/datepicker.css" rel="stylesheet">
-    <script src="/assets/libraries/datepicker/bootstrap-datepicker.js"></script>
-
     <!-- Tablecloth -->
     <link href="/assets/libraries/tablecloth/css/tablecloth.css" rel="stylesheet">
     <script src="/assets/libraries/tablecloth/js/jquery.tablecloth.js"></script>

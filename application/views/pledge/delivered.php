@@ -32,7 +32,7 @@
 
 			<div class="form-group <?PHP echo form_error('date_delivered') ? 'has-error' : '' ?>">
 				<label class="control-label" id="date_delivered">Delivery Date</label>
-				<input type="text" id="date_delivered" name="date_delivered" class="form-control datepicker" value="<?php echo set_value('date_delivered', $pledge->date_delivered_if_exists() ); ?>">
+				<input type="date" id="date_delivered" name="date_delivered" class="form-control" value="<?php echo set_value('date_delivered', $pledge->date_delivered_if_exists() ); ?>">
 				<span class="help-block">Date you recieved everything, if you checked "Yes" above (Optional).</span>
 			</div>
 			<div class="col-md-6 col-md-push-6">
