@@ -198,6 +198,8 @@ class Pledges extends AUTHED_Controller {
 		} else {
 			return $this->error(404);
 		}
+		
+		$this->viewdata['existing_pledge'] = $this->Pledge->pledges_for_campaign($this->current_user, $campaign);
 
 		$campaign_data = $this->kickstarter->campaign_data($campaign->URL);
 		if($campaign_data){

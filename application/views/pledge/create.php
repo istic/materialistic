@@ -2,12 +2,17 @@
 <div class="row">
 	<div class="col-sm-9 col-md-6">
 		<?PHP
+			$create = $pledge->id ? False : True;
+			if(isset($existing_pledge) && $create){
+				?>
+				<div class="alert alert-info">Note: You already have a pledge registered for this campaign</div>
+				<?PHP
+			}
 			if(isset($error)){
 				?>
 				<div class="alert alert-danger"><?PHP echo $error ?></div>
 				<?PHP
 			}
-			$create = $pledge->id ? False : True;
              echo validation_errors();
 		?>
 

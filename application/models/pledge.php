@@ -25,6 +25,19 @@ class Pledge extends MY_Model {
         return $this->multiple_results($res);
     }
 
+    function pledges_for_campaign(User_Object $user, Campaign_Object $campaign){
+
+        $this->db->select("pledge.*");
+        $this->db->from("pledge");
+        $this->db->where("user_id", $user->id);
+        $this->db->where("campaign_id", $campaign->id);
+        $this->db->join('campaign', 'campaign.id = pledge.campaign_id');
+        
+        $res = $this->db->get();
+        return $this->single_result($res);
+        
+
+    }   
 }
 
 class Pledge_Object extends My_Object {
