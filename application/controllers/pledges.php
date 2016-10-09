@@ -13,6 +13,13 @@ class Pledges extends AUTHED_Controller {
 				return $this->ks_search($dirs[3], $dirs[2]);
 				break;
 
+			case "fig.co":
+			case "www.fig.co":
+
+				$clean_url = $purl['scheme']."://".$purl['host'].$purl['path'];
+				return $this->from_fig($clean_url);
+				break;
+
 			case false:
 				$this->viewdata['error'] = 'That wasn\'t a URL';
 				return $this->create_campaign();
@@ -126,6 +133,10 @@ class Pledges extends AUTHED_Controller {
 		return $this->ks_search($this->input->post('query'));
 	}
 
+	public function fig(){
+		return $this->fig_search($this->input->post('query'));
+	}
+
 	public function create_campaign(){
         $this->load->library('form_validation');
         $this->load->model('Campaign');
@@ -155,6 +166,16 @@ class Pledges extends AUTHED_Controller {
 		}
 	}
 
+	public function from_fig($url, $creator = false){
+		$this->load->library('Fig');
+		$this->load->model('Campaign');
+
+		$campaign = $this->fig->create_from_url($url);
+		
+		$this->redirect('/pledges/create?campaign='.$campaign->id);
+		
+	}
+
 	public function edit(){
 		return $this->create();
 	}
@@ -164,6 +185,7 @@ class Pledges extends AUTHED_Controller {
 		$this->load->model('Pledge');
         $this->load->library('form_validation');
         $this->load->library('kickstarter');
+        $this->load->library('fig');
 
         $pledge_id = $this->input->get_post('id', TRUE);
         $pledge = new Pledge_Object;
@@ -185,6 +207,7 @@ class Pledges extends AUTHED_Controller {
 	       	if(!$campaign_id){
 	       		$campaign_id = $this->input->get_post('campaign', TRUE);
 	       	}
+	       	$pledge->is_delivered = "No";
         }
 
         $this->viewdata['pledge'] = $pledge;
@@ -201,10 +224,14 @@ class Pledges extends AUTHED_Controller {
 		
 		$this->viewdata['existing_pledge'] = $this->Pledge->pledges_for_campaign($this->current_user, $campaign);
 
-		$campaign_data = $this->kickstarter->campaign_data($campaign->URL);
-		if($campaign_data){
-			$this->viewdata['rewards'] = $campaign_data->rewards;
-		}
+		if($campaign->site == "kickstarter"){
+			$campaign_data = $this->kickstarter->campaign_data($campaign->URL);
+			if($campaign_data){
+				$this->viewdata['rewards'] = $campaign_data->rewards;
+			}
+		} elseif($campaign->site == "fig"){
+			$this->viewdata['rewards'] = $this->fig->rewards($campaign->URL);
+		} 
 
 		$req = 'required|trim|xss_clean';
 		$nreq = 'trim|xss_clean';

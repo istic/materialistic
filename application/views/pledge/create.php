@@ -22,17 +22,18 @@
 			<input type="hidden" id="campaign_id" name="campaign_id" class="form-control" value="<?php echo $campaign->id; ?>">
 			<input type="hidden" id="id" name="id" class="form-control" value="<?php echo set_value('id', $pledge->id); ?>">
 
-			<?PHP if(isset($rewards)){ ?> 
-
-
+			<?PHP if(isset($rewards)){
+			 ?> 
 			<div class="form-group <?PHP echo form_error('rewards') ? 'has-error' : '' ?>">
 				<label class="control-label" for="rewards">Select your rewards</label>
-				<select id="rewards" class="form-control">
+				<select id="rewards" class="form-control" required="true">
+				<option value="">--- Please Select --</option>
 				<?PHP foreach($rewards as $id => $reward){
 					$description = str_replace(array('\n', '\r', '\t'), array("\n", "\r", "\t"), $reward->description);
-					$title = array_shift(preg_split("/[\r\n\t:]+/", $description));
+					$title = isset($reward->title) ? $reward->title : array_shift(preg_split("/[\r\n\t:]+/", $description));
+					$selector = currency_symbol($campaign->currency).$reward->minimum.' &ndash; '.$title;
 					$date = date("Y-m-d", $reward->estimated_delivery_on + 60*60*24*28);
-					echo '<option value="'.$id.'" data-value="'.$reward->minimum.'"  data-promised="'.$date.'" data-tier="'.$title.'">'.$description.'</option>';
+					echo '<option value="'.$id.'" data-value="'.$reward->minimum.'"  data-promised="'.$date.'" data-tier="'.$title.'" data-desc="'.$description.'">'.$selector.'</option>';
 				} ?>
 				</select>
 			</div>

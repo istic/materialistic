@@ -26,6 +26,7 @@
 		<table width="100%" class="table tablecloth">
 		<thead>
 			<tr>
+				<th>Site</th>
 				<th>Name</th>
 				<th>Status</th>
 				<th>Concluded</th>
@@ -48,6 +49,7 @@
 				}
 			?>
 			<tr>
+				<th><img src="/assets/img/<?PHP echo $pledge->campaign()->site ?>.png" width="16" /></th>
 				<th><a href="<?PHP echo $pledge->campaign()->URL ?>"><?PHP echo $pledge->campaign()->name ?></a></th>
 				<td><?PHP 
 				if( strtotime($pledge->campaign()->date_end) > time() ){
