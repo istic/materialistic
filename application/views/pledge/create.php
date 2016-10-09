@@ -26,7 +26,7 @@
 			 ?> 
 			<div class="form-group <?PHP echo form_error('rewards') ? 'has-error' : '' ?>">
 				<label class="control-label" for="rewards">Select your rewards</label>
-				<select id="rewards" class="form-control" required="true">
+				<select id="rewards" class="form-control">
 				<option value="">--- Please Select --</option>
 				<?PHP foreach($rewards as $id => $reward){
 					$description = str_replace(array('\n', '\r', '\t'), array("\n", "\r", "\t"), $reward->description);
