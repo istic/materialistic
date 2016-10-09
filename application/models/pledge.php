@@ -138,7 +138,10 @@ class Pledge_Object extends My_Object {
 	}
 
 	function convert_to_currency($currency){
-		$this->CI->load->library("openexchangerates");
+		if(!isset($this->CI->openexchangerates)){
+		    $this->CI->load->library("openexchangerates");
+		}
+
 		if(  strtotime($this->date_ended) > time() || $this->date_ended == '0000-00-00' ){
 			$date = false;
 		} else {
