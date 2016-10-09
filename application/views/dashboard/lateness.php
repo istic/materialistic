@@ -12,29 +12,29 @@ $c = currency_symbol($current_user->home_currency);
         var data = google.visualization.arrayToDataTable([
           ['Project', 'Weeks between end and deadline', 'Weeks after deadline', 'Category',     'Value (<?PHP echo $current_user->home_currency ?>)', 'Status'],
         <?PHP foreach($pledges as $pledge){ 
-        	$promised   = strtotime($pledge->date_promised);
-        	$date_ended = strtotime($pledge->campaign()->date_end);
+          $promised   = strtotime($pledge->date_promised);
+          $date_ended = strtotime($pledge->campaign()->date_end);
 
-        	if($pledge->is_delivered !== 'Yes'){
-        		if($pledge->is_delivered == 'Failed'){
-        			continue;
-        		}
-        		if($promised > time()){
-        			continue;
-        			$promised = 0;
-        		}
-        	}
+          if($pledge->is_delivered !== 'Yes'){
+            if($pledge->is_delivered == 'Failed'){
+              continue;
+            }
+            if($promised > time()){
+              continue;
+              $promised = 0;
+            }
+          }
 
 
-        	?>
+          ?>
           ['<?PHP echo addslashes($pledge->campaign()->name) ?>', 
-          	   <?PHP printf("%.2f", ($promised - $date_ended) / (60*60*24*7) ) ?>, 
-          	   <?PHP printf("%.2f", $pledge->lateness()) ?>,   
-          	   "<?PHP echo $pledge->campaign()->category ?>",
-          	   <?PHP echo $pledge->convert_to_currency($current_user->home_currency) ?>,
-          	   "<?PHP echo $pledge->status() ?>"],
+               <?PHP printf("%.2f", ($promised - $date_ended) / (60*60*24*7) ) ?>, 
+               <?PHP printf("%.2f", $pledge->lateness()) ?>,   
+               "<?PHP echo $pledge->campaign()->category ?>",
+               <?PHP echo $pledge->convert_to_currency($current_user->home_currency) ?>,
+               "<?PHP echo $pledge->status() ?>"],
 
-       	<?PHP } ?>
+        <?PHP } ?>
         ]);
 
         var options = {
@@ -60,7 +60,8 @@ $c = currency_symbol($current_user->home_currency);
 </ul>
 <!-- Tab panes -->
 <div class="tab-content">
-	<div class="tab-pane active" id="graphs">
+  <p>[ <a href="/my/by-lateness">All Projects</a> | <a href="/my/by-lateness/delivered">Projects Delivered</a> | <a href="/my/by-lateness/waiting">Projects In Flight</a> ]</p>
+  <div class="tab-pane active" id="graphs">
 
 
 <div class="col-md-12" id="chart_div" style="height: 800px;">
@@ -68,35 +69,35 @@ $c = currency_symbol($current_user->home_currency);
 </div>
 
 
-	</div>
-	<div class="tab-pane" id="data" >
-		<table width="100%" class="table tablecloth">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Value</th>
-				<th>Category</th>
-				<th>Lateness (Weeks)</th>
-			</tr>
-		</thead>
-		<tbody>
-		<?PHP foreach($pledges as $pledge_id => $pledge) { 
-			if($pledge->is_delivered == "Failed"){
-				continue;
-			}
-			if(new \DateTime($pledge->date_promised) > new \DateTime() && ! $pledge->is_late() ){
-				continue;
-			}
-			$value = $pledge->convert_to_currency($current_user->home_currency);
-		?>
-		<tr>
-			<th><?PHP echo $pledge->campaign()->name          ?></th>
-       		<td><?PHP echo view_currency($current_user->home_currency, $value)      ?></td>
-       		<td><?PHP echo $pledge->campaign()->category      ?></td>
-        	<td><?PHP printf("%.2f", $pledge->lateness() );      ?></td>
-		</tr>
-		<?PHP } ?>
-		</tbody>
-	</table>
-	</div>
+  </div>
+  <div class="tab-pane" id="data" >
+    <table width="100%" class="table tablecloth">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>Category</th>
+        <th>Lateness (Weeks)</th>
+      </tr>
+    </thead>
+    <tbody>
+    <?PHP foreach($pledges as $pledge_id => $pledge) { 
+      if($pledge->is_delivered == "Failed"){
+        continue;
+      }
+      if(new \DateTime($pledge->date_promised) > new \DateTime() && ! $pledge->is_late() ){
+        continue;
+      }
+      $value = $pledge->convert_to_currency($current_user->home_currency);
+    ?>
+    <tr>
+      <th><?PHP echo $pledge->campaign()->name          ?></th>
+          <td><?PHP echo view_currency($current_user->home_currency, $value)      ?></td>
+          <td><?PHP echo $pledge->campaign()->category      ?></td>
+          <td><?PHP printf("%.2f", $pledge->lateness() );      ?></td>
+    </tr>
+    <?PHP } ?>
+    </tbody>
+  </table>
+  </div>
 </div>

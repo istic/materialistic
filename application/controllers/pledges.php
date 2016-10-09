@@ -20,6 +20,13 @@ class Pledges extends AUTHED_Controller {
 				return $this->from_fig($clean_url);
 				break;
 
+			// case "indiegogo.com":
+			// case "www.indiegogo.com":
+
+			// 	$clean_url = $purl['scheme']."://".$purl['host'].$purl['path'];
+			// 	return $this->from_indiegogo($clean_url);
+			// 	break;
+
 			case false:
 				$this->viewdata['error'] = 'That wasn\'t a URL';
 				return $this->create_campaign();
@@ -137,6 +144,7 @@ class Pledges extends AUTHED_Controller {
 		return $this->fig_search($this->input->post('query'));
 	}
 
+
 	public function create_campaign(){
         $this->load->library('form_validation');
         $this->load->model('Campaign');
@@ -171,6 +179,16 @@ class Pledges extends AUTHED_Controller {
 		$this->load->model('Campaign');
 
 		$campaign = $this->fig->create_from_url($url);
+		
+		$this->redirect('/pledges/create?campaign='.$campaign->id);
+		
+	}
+
+	public function from_indiegogo($url, $creator = false){
+		$this->load->library('Indiegogo');
+		$this->load->model('Campaign');
+
+		$campaign = $this->indiegogo->create_from_url($url);
 		
 		$this->redirect('/pledges/create?campaign='.$campaign->id);
 		
@@ -231,6 +249,8 @@ class Pledges extends AUTHED_Controller {
 			}
 		} elseif($campaign->site == "fig"){
 			$this->viewdata['rewards'] = $this->fig->rewards($campaign->URL);
+		} elseif($campaign->site == "indiegogo"){
+			$this->viewdata['rewards'] = $this->indiegogo->rewards($campaign->URL);
 		} 
 
 		$req = 'required|trim|xss_clean';

@@ -12,7 +12,7 @@ class Pledge extends MY_Model {
 		$this->load->database();
     }
 
-    function pledges_by_user(User_Object $user){
+    function pledges_by_user(User_Object $user, $status = false){
 
         $this->db->select("pledge.*");
         $this->db->from("pledge");
@@ -20,6 +20,12 @@ class Pledge extends MY_Model {
         $this->db->join('campaign', 'campaign.id = pledge.campaign_id');
         $this->db->order_by('campaign.name');
         
+        if($status == "waiting"){
+        	$this->db->where_in("is_delivered", ["No", "Failed", "Partially"]);
+        } elseif($status == "delivered"){
+        	$this->db->where("is_delivered", "Yes");
+        }
+
         $res = $this->db->get();
         
         return $this->multiple_results($res);

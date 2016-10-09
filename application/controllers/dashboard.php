@@ -77,7 +77,7 @@ class Dashboard extends MY_Controller {
 		$this->render("dashboard/monthly");
 	}
 
-	public function lateness(){
+	public function lateness($status = false){
 		$this->requires_authentication();
 
 	
@@ -85,7 +85,7 @@ class Dashboard extends MY_Controller {
 
 
         $this->load->model('Pledge');
-		$this->viewdata['pledges'] = $this->Pledge->pledges_by_user($this->current_user);
+		$this->viewdata['pledges'] = $this->Pledge->pledges_by_user($this->current_user, $status);
 		
 		$this->render("dashboard/lateness");
 	}

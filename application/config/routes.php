@@ -74,6 +74,7 @@ $route['my/by-category'] = 'dashboard/category';
 $route['my/projects']    = 'dashboard/projects';
 $route['my/by-month']    = 'dashboard/monthly';
 $route['my/by-lateness'] = 'dashboard/lateness';
+$route['my/by-lateness/(:any)'] = 'dashboard/lateness/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

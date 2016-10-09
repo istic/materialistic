@@ -1,4 +1,8 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
+
+require_once __DIR__ . '/../vendor/autoload.php';
+error_reporting(E_ALL);
 
 /*
  *---------------------------------------------------------------
@@ -210,5 +214,12 @@ if (defined('ENVIRONMENT'))
  * --------------------------------------------------------------------
  *
  * And away we go...
- */
-require_once BASEPATH.'core/CodeIgniter.php';
+*/
+
+try {
+	require_once BASEPATH.'core/CodeIgniter.php';
+} catch (Exception $e){
+
+	die("Xep: ".$e->getMessage());
+}
+

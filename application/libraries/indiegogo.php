@@ -1,42 +1,50 @@
 <?PHP
 
-class Kickstarter {
+use GuzzleHttp\Client;
+
+class Indiegogo {
 	private $CI;
 
 	function __construct(){
 		$this->CI =& get_instance(); 
 	}
 
-	function search($query){
-		$cachefile = '/tmp/materialistic-'.md5($query);
-		if(file_exists($cachefile)){
-			return unserialize(file_get_contents($cachefile));
+	function campaign_data($url){
+		$data = $this->project_page($url);
+
+		var_dump(htmlentities($url));
+		var_dump(htmlentities($data));die();
+		$regex = "#<script>(.*?)</script>#s";
+		$works = preg_match_all($regex, $data, $matches);
+		if(!$works){
+			die("Parsing failed");
 		}
-		$url = 'http://www.kickstarter.com/projects/search.json?search=&term='.urlencode($query);
-		$data = json_decode(file_get_contents($url));
-		file_put_contents($cachefile, serialize($data));
-		return $data;
-	}
 
-	function canonical_url($creator, $project){
-		return 'http://www.kickstarter.com/projects/'.$creator.'/'.$project;
-	}
+		$script_data = $matches[1][0];
 
-	function create_from_search_results($search_results){
-		$campaigns = array();
-		foreach($search_results->projects as $project){
-			$campaigns[] = $this->create_from_ks_object($project);
+		var_dump(htmlentities($script_data));die();
+
+		$regex = '#FIG_CACHE\["(.*?)"\] \= (.*?);$#sm';
+		$works = preg_match_all($regex, $script_data, $matches);
+		if(!$works){
+			die("Parsing failed");
 		}
-		return $campaigns;
+
+
+
+		$project = array();
+
+		foreach($matches[1] as $i => $data){
+			$project[$matches[1][$i]] = json_decode($matches[2][$i]);
+		}
+
+		return $project;
 	}
 
-	function create_from_ks_object($project){
+
+	function create_from_url($url){
 
 		$this->CI->load->model('Campaign');
-
-		$creator_slug = isset($project->creator->slug) ? $project->creator->slug : $project->creator->id;
-
-		$url = $this->canonical_url($creator_slug, $project->slug);
 
 		if($campaign = $this->CI->Campaign->fetch_by_url($url)){
 			return $campaign;
@@ -44,60 +52,100 @@ class Kickstarter {
 
 		$campaign = new Campaign_Object();
 
-		$campaign->name         = $project->name;
+		$data = $this->campaign_data($url);
+		$project = $data['campaign'];
+
+		// header("Content-Type: Application/JSON");
+		// print json_encode($project);
+		// die();
+
+
+		$campaign->name         = $project->title;
 		$campaign->URL          = $url;
-		$campaign->target       = $project->goal;
-		$campaign->pledged      = $project->pledged;
-		$campaign->backer_count = $project->backers_count;
-		$campaign->site         = 'kickstarter';
+		$campaign->target       = $project->goal_no_cents;
+		$campaign->pledged      = $project->total_pledged_cents/100;
+		$campaign->backer_count = $project->total_fans;
+		$campaign->site         = 'fig';
 
 		// ENUM('live', 'successful', 'failed', 'suspended', 'deleted', 'canceled');
-		$campaign->status   = $project->state;
+
+		if($project->ended && $project->success){
+			$state = 'successful';
+		} elseif($project->ended && !$project->success){
+			$state = 'failed';
+		} elseif(!$project->ended){
+			$state = 'live';
+		} 
+
+		$campaign->status   = $state;
 		$campaign->vitality = ($project->state == 'successful' || $project->state == 'live');
 
-		$campaign->creator  = $project->creator->name;
+		$campaign->creator  = $project->company->name;
 		$campaign->currency = $project->currency;
-		$campaign->category = $project->category->name;
-		$campaign->photo    = $project->photo->med;
-		$campaign->country  = $project->country;
+		$campaign->category = "Computer Games";
+		$campaign->photo    = $project->featured_image_url;
+		$campaign->country  = "US";
 
-		$campaign->date_start    = date(DATETIME_MYSQL, $project->created_at);
-		$campaign->date_end      = date(DATETIME_MYSQL, $project->deadline);
+		$campaign->date_start    = date(DATETIME_MYSQL, strtotime($project->start_timestamp));
+		$campaign->date_end      = date(DATETIME_MYSQL, strtotime($project->end_timestamp));
 		$campaign->date_checked  = date(DATETIME_MYSQL);
 		$campaign->date_created  = date(DATETIME_MYSQL);
 		$campaign->date_modified = date(DATETIME_MYSQL);
+
 		$campaign->save();
 		return $campaign;
 	}
 
 
 	function project_page($url){
-		$cachefile = '/tmp/materialistic-ks-'.md5($url);
+		$cachefile = '/tmp/materialistic-indiegogo-'.md5($url);
 		if(file_exists($cachefile)){
-			return file_get_contents($cachefile);
+			// return file_get_contents($cachefile);
 		}
-		$data = file_get_contents($url);
+		$client = new Client([
+            // Base URI is used with relative requests
+            // 'base_uri' => 'https://trello.com/',
+            // You can set any number of default request options.
+            'timeout'  => 2.0,
+        ]);
+        echo "<pre>";
+        // $response = $client->request('GET', $url, ['debug' => true, 'User-Agent' => 'Materialist (Like Gecko)',]);
+        $response = $client->request('GET', $url, ['debug' => true, 'headers' => ['User-Agent' => 'Materialist (Like Gecko)',]]);
+
+        var_dump($request->headers);
+    
+        $data = (String)$response->getBody();
+
+        if(!$response->getStatusCode() === 200) {
+			die("X".$response->getStatusCode());
+            return false;
+        }
+
+        $data = (String)$response->getBody();
+
 		file_put_contents($cachefile, $data);
 
 		return $data;
 	}
 
-	function campaign_data($url){
-		$page = $this->project_page($url);
-		$res = preg_match_all('/window.current_project = "(.*)"/', $page, $matches);
-		if(!count($matches)){
+	function rewards($url){
+		$data = $this->campaign_data($url);
 
-			return false;
+		$rewards = array();
+		foreach($data['reward_bundles'] as $reward_src){
+			$reward = new stdClass();
+
+			$eta = strtotime($reward_src->delivery_year."-".$reward_src->delivery_month."-01");
+
+			$reward->id = $reward_src->id;
+			$reward->description = $reward_src->description;
+			$reward->title = $reward_src->name;
+			$reward->estimated_delivery_on = $eta;
+			$reward->minimum = $reward_src->price_cents/100;
+			$rewards[$reward->id] = $reward;
+
 		}
-		$data = html_entity_decode(stripslashes($matches[1][0]));
-		#$data = $matches[1][0];
-		/*$v8 = new V8Js();
-		$js = 'var json = JSON.stringify('.$data.');';
-		try {
-			$json - $v8->executeString($js);
-		} catch (V8JsException $e) {
-			 var_dump($e);
-		}*/
-		return json_decode($data);
+
+		return $rewards;
 	}
 }
