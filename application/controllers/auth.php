@@ -45,7 +45,7 @@ class Auth extends MY_Controller {
             $user = new User_Object($data);
             
             $this->session->set_userdata("authorised_user", $id);
-            $this->session->set_userdata("user", $user);
+            //$this->session->set_userdata("user", $user);
             $this->current_user = $user;
             
             $this->validate_email();

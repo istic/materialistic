@@ -39,6 +39,10 @@ class Dashboard extends MY_Controller {
         $this->load->model('Pledge');
 		$this->viewdata['pledges'] = $this->Pledge->pledges_by_user($this->current_user);
 
+		if(!count($this->viewdata['pledges'])){
+			redirect("/my/projects");
+		}
+
 		$this->render("dashboard/stats");
 	}
 
