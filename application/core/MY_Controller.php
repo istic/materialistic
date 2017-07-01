@@ -110,7 +110,11 @@ class MY_Controller extends CI_Controller {
 			
 			return true;
 		} else {
-			redirect("/auth/login?redirect_to=".current_url());
+
+		    $url = $this->config->site_url($this->uri->uri_string());
+		    $redirect_to = $_SERVER['QUERY_STRING'] ? $url.'?'.$_SERVER['QUERY_STRING'] : $url;
+
+			redirect("/auth/login?redirect_to=".urlencode($redirect_to));
 		}
 	}
 	

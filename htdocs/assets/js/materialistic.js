@@ -14,6 +14,12 @@ MaterialIstic = {
 		if($('#rewards').length){
 			$('#rewards').on('change', MaterialIstic.prefillRewards);
 		}
+		$('#bookmarklet').click(MaterialIstic.bookmarklet)
+	},
+
+	bookmarklet : function(){
+		window.alert("Can't click this!\nDrag it into your bookmarks to use it to send Crowdfunder projects into Materialistic");
+		return false;
 	},
 
 	autogrow : function(e) {

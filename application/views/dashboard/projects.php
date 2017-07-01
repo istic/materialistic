@@ -12,6 +12,11 @@
 	</div>
 	</form>
 </div>
+<div class="col-md-6">
+	<p><label for="bookmarklet">Or drag this bookmarklet to your bookmarks bar, go to a project page and click it</label>
+	<a id="bookmarklet" class="btn btn-primary" href="javascript:if(document.getSelection)%7Bs=document.getSelection();%7Delse%7Bs='';%7D;document.location='http://material.istic.net/pledges/from_url?url='+encodeURIComponent(location.href)">&gt; Materialistic</a></p>
+	
+</div>
 </div>
 <div class="row">
 <div class="col-md-12">
