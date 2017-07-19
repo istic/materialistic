@@ -1,4 +1,4 @@
-*/config/development
+*/config/*/define_secrets.php
 */logs/log-*.php
 */logs/!index.html
 */cache/*
@@ -9,3 +9,5 @@ logs
 *swp
 .vagrant
 vendor
+/.phpintel
+/data/data.sql

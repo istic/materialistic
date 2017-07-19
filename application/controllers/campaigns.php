@@ -6,15 +6,15 @@ class Campaigns extends AUTHED_Controller {
         $this->load->library('form_validation');
         $this->load->model('Campaign');
 
-        $this->form_validation->set_rules('name', 'Name', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('url', 'URL', 'required|trim|xss_clean|is_unique[campaign.URL]');
-        $this->form_validation->set_rules('target', 'Target', 'required|trim|xss_clean|integer');
+        $this->form_validation->set_rules('name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('url', 'URL', 'required|trim|is_unique[campaign.URL]');
+        $this->form_validation->set_rules('target', 'Target', 'required|trim|integer');
 
-        $this->form_validation->set_rules('status', 'Status', 'required|trim|xss_clean|callback_valid_status');
-        $this->form_validation->set_rules('creator', 'Creator', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('currency', 'Currency', 'required|trim|xss_clean|exact_length[3]');
-        $this->form_validation->set_rules('category', 'Category', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('country', 'Country', 'required|trim|xss_clean|exact_length[2]');
+        $this->form_validation->set_rules('status', 'Status', 'required|trim|callback_valid_status');
+        $this->form_validation->set_rules('creator', 'Creator', 'required|trim');
+        $this->form_validation->set_rules('currency', 'Currency', 'required|trim|exact_length[3]');
+        $this->form_validation->set_rules('category', 'Category', 'required|trim');
+        $this->form_validation->set_rules('country', 'Country', 'required|trim|exact_length[2]');
 
         if ($this->form_validation->run() == FALSE) {
         	$validator =& _get_validation_object();

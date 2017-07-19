@@ -43,13 +43,17 @@ class MY_Controller extends CI_Controller {
 			
 			$this->viewdata['notifications'] = $this->Notification->my_messages($this->current_user->id);
 			
-			if ($this->current_user->is_admin){
+			if ($this->current_user->is_admin or ENVIRONMENT == 'development'){
 	 			$this->output->enable_profiler(true);       
 			}
         } else {
             $this->current_user = new Anonymous_User();
             $this->viewdata['notifications'] = array();
         }
+
+		if (ENVIRONMENT == 'development'){
+ 			$this->output->enable_profiler(true);       
+		}
         
         $this->viewdata['current_user'] = $this->current_user;
 		

@@ -1,29 +1,5 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * CodeIgniter
- *
- * An open source application development framework for PHP 5.2.4 or newer
- *
- * NOTICE OF LICENSE
- *
- * Licensed under the Academic Free License version 3.0
- *
- * This source file is subject to the Academic Free License (AFL 3.0) that is
- * bundled with this package in the files license_afl.txt / license_afl.rst.
- * It is also available through the world wide web at this URL:
- * http://opensource.org/licenses/AFL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
- * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/AFL-3.0 Academic Free License (AFL 3.0)
- * @link		http://codeigniter.com
- * @since		Version 1.0
- * @filesource
- */
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -34,8 +10,9 @@
 | mobile device data. The array keys are used to identify the device
 | and the array values are used to set the actual name of the item.
 */
-
 $platforms = array(
+	'windows nt 10.0'	=> 'Windows 10',
+	'windows nt 6.3'	=> 'Windows 8.1',
 	'windows nt 6.2'	=> 'Windows 8',
 	'windows nt 6.1'	=> 'Windows 7',
 	'windows nt 6.0'	=> 'Windows Vista',
@@ -50,6 +27,7 @@ $platforms = array(
 	'win98'				=> 'Windows 98',
 	'windows 95'		=> 'Windows 95',
 	'win95'				=> 'Windows 95',
+	'windows phone'			=> 'Windows Phone',
 	'windows'			=> 'Unknown Windows OS',
 	'android'			=> 'Android',
 	'blackberry'		=> 'BlackBerry',
@@ -73,18 +51,24 @@ $platforms = array(
 	'bsdi'				=> 'BSDi',
 	'openbsd'			=> 'OpenBSD',
 	'gnu'				=> 'GNU/Linux',
-	'unix'				=> 'Unknown Unix OS'
+	'unix'				=> 'Unknown Unix OS',
+	'symbian' 			=> 'Symbian OS'
 );
 
 
 // The order of this array should NOT be changed. Many browsers return
 // multiple browser types so we want to identify the sub-type first.
 $browsers = array(
+	'OPR'			=> 'Opera',
 	'Flock'			=> 'Flock',
+	'Edge'			=> 'Spartan',
 	'Chrome'		=> 'Chrome',
+	// Opera 10+ always reports Opera/9.80 and appends Version/<real version> to the user agent string
+	'Opera.*?Version'	=> 'Opera',
 	'Opera'			=> 'Opera',
 	'MSIE'			=> 'Internet Explorer',
 	'Internet Explorer'	=> 'Internet Explorer',
+	'Trident.* rv'	=> 'Internet Explorer',
 	'Shiira'		=> 'Shiira',
 	'Firefox'		=> 'Firefox',
 	'Chimera'		=> 'Chimera',
@@ -101,7 +85,9 @@ $browsers = array(
 	'Links'			=> 'Links',
 	'hotjava'		=> 'HotJava',
 	'amaya'			=> 'Amaya',
-	'IBrowse'		=> 'IBrowse'
+	'IBrowse'		=> 'IBrowse',
+	'Maxthon'		=> 'Maxthon',
+	'Ubuntu'		=> 'Ubuntu Web Browser'
 );
 
 $mobiles = array(
@@ -148,6 +134,7 @@ $mobiles = array(
 	'mot-'			=> 'Motorola',
 	'playstation portable'	=> 'PlayStation Portable',
 	'playstation 3'		=> 'PlayStation 3',
+	'playstation vita'  	=> 'PlayStation Vita',
 	'hiptop'		=> 'Danger Hiptop',
 	'nec-'			=> 'NEC',
 	'panasonic'		=> 'Panasonic',
@@ -180,7 +167,7 @@ $mobiles = array(
 	'operamini'		=> 'Opera Mini',
 	'opera mini'	=> 'Opera Mini',
 	'opera mobi'	=> 'Opera Mobile',
-	'fennec'	=> 'Firefox Mobile',
+	'fennec'		=> 'Firefox Mobile',
 
 	// Other
 	'digital paths'	=> 'Digital Paths',
@@ -207,14 +194,21 @@ $mobiles = array(
 $robots = array(
 	'googlebot'		=> 'Googlebot',
 	'msnbot'		=> 'MSNBot',
+	'baiduspider'		=> 'Baiduspider',
 	'bingbot'		=> 'Bing',
 	'slurp'			=> 'Inktomi Slurp',
 	'yahoo'			=> 'Yahoo',
-	'askjeeves'		=> 'AskJeeves',
-	'fastcrawler'	=> 'FastCrawler',
+	'ask jeeves'		=> 'Ask Jeeves',
+	'fastcrawler'		=> 'FastCrawler',
 	'infoseek'		=> 'InfoSeek Robot 1.0',
-	'lycos'			=> 'Lycos'
+	'lycos'			=> 'Lycos',
+	'yandex'		=> 'YandexBot',
+	'mediapartners-google'	=> 'MediaPartners Google',
+	'CRAZYWEBCRAWLER'	=> 'Crazy Webcrawler',
+	'adsbot-google'		=> 'AdsBot Google',
+	'feedfetcher-google'	=> 'Feedfetcher Google',
+	'curious george'	=> 'Curious George',
+	'ia_archiver'		=> 'Alexa Crawler',
+	'MJ12bot'		=> 'Majestic-12',
+	'Uptimebot'		=> 'Uptimebot'
 );
-
-/* End of file user_agents.php */
-/* Location: ./application/config/user_agents.php */

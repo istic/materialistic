@@ -131,7 +131,6 @@ class Pledge_Object extends My_Object {
 			}
 		} elseif($this->is_delivered == "Failed"){
 			return 'Failed';
-			continue;
 		} else {
 			if( $this->is_late() ){
 				return "In Progress, but Late";
