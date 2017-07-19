@@ -1,9 +1,9 @@
 [submodule "libraries/codeigniter"]
 	path = libraries/codeigniter
-	url = git@github.com:aquarion/CodeIgniter.git
+	url = git@github.com:bcit-ci/CodeIgniter.git
 [submodule "libraries/postmark"]
 	path = libraries/postmark
-	url = git://github.com/zackkitzmiller/postmark-codeigniter.git
+	url = git@github.com:aquarion/postmark-codeigniter.git
 [submodule "libraries/bootswatch"]
 	path = libraries/bootswatch
 	url = git@github.com:thomaspark/bootswatch.git

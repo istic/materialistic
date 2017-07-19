@@ -115,10 +115,10 @@ class Pledges extends AUTHED_Controller {
 		$this->viewdata['campaign'] = $pledge->campaign();
 
 
-		$req = 'required|trim|xss_clean';
-		$nreq = 'trim|xss_clean';
+		$req = 'required|trim';
+		$nreq = 'trim';
 
-        $this->form_validation->set_rules('is_delivered', 'Delivered Status', 'required|trim|xss_clean|callback_valid_deliver_status');
+        $this->form_validation->set_rules('is_delivered', 'Delivered Status', 'required|trim|callback_valid_deliver_status');
         $this->form_validation->set_rules('date_delivered', 'Delivered Date', $nreq.'|callback_valid_date[date_delivered]');
 
         if ($this->form_validation->run() == FALSE) {
@@ -253,13 +253,13 @@ class Pledges extends AUTHED_Controller {
 			$this->viewdata['rewards'] = $this->indiegogo->rewards($campaign->URL);
 		} 
 
-		$req = 'required|trim|xss_clean';
-		$nreq = 'trim|xss_clean';
+		$req = 'required|trim';
+		$nreq = 'trim';
 
         $this->form_validation->set_rules('backing_tier', 'Backing Tier', $req);
         $this->form_validation->set_rules('description', 'Description', $nreq);
         $this->form_validation->set_rules('value', 'Pledge', $nreq.'|numeric');
-        $this->form_validation->set_rules('is_delivered', 'Delivered Status', 'required|trim|xss_clean|callback_valid_deliver_status');
+        $this->form_validation->set_rules('is_delivered', 'Delivered Status', 'required|trim|callback_valid_deliver_status');
 
         $this->form_validation->set_rules('date_promised', 'Promised Date', $req.'|callback_valid_date[date_promised]');
         $this->form_validation->set_rules('date_reasonable', 'Reasonable Date', $nreq.'|callback_valid_date[date_reasonable]');

@@ -26,9 +26,9 @@ class Auth extends MY_Controller {
         $this->load->helper(array('form', 'url'));
 
 
-        $this->form_validation->set_rules('name', 'Name', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'required|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|xss_clean|callback_check_email');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|callback_check_email');
         $this->form_validation->set_rules('pronoun', 'Pronoun', 'trim');
         $this->form_validation->set_rules('home_currency', 'Home Currency', 'required|trim');
 
@@ -220,11 +220,11 @@ class Auth extends MY_Controller {
         $this->load->model("Pronoun");
         $this->load->library('form_validation');
         
-        $this->form_validation->set_rules('name', 'Name', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'required|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|callback_verify_password');
         $this->form_validation->set_rules('pronoun', 'Pronoun', 'trim');
         $this->form_validation->set_rules('home_currency', 'Home Currency', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|xss_clean|callback_check_email');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|callback_check_email');
         
         $this->viewdata['pronouns'] = shuffle_assoc($this->Pronoun->list_options());
         $this->viewdata['user'] = $this->current_user;
