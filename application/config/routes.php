@@ -61,3 +61,6 @@ $route['my/projects']    = 'dashboard/projects';
 $route['my/by-month']    = 'dashboard/monthly';
 $route['my/by-lateness'] = 'dashboard/lateness';
 $route['my/by-lateness/(:any)'] = 'dashboard/lateness/$1';
+$route['auth/login'] = 'auth/login';
+$route['auth/forgot'] = 'auth/forgot';
+$route['auth/reset/(:any)'] = 'auth/reset/$1';

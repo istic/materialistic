@@ -33,8 +33,8 @@ define("APPNAME", "Materialistic");
 |
 */
 
-$config['base_url']     = 'http://material.istic.net';
-$config['secure_url']   = 'https://material.istic.net';
+$config['base_url']     = 'http://materialistic.dev';
+$config['secure_url']   = 'http://materialistic.dev';
 
 /*
 |--------------------------------------------------------------------------
@@ -234,7 +234,7 @@ $config['allow_get_array'] = true;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 4;
+$config['log_threshold'] = 0;
 
 /*
 |--------------------------------------------------------------------------
@@ -391,7 +391,7 @@ $config['encryption_key'] = '';
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = '/tmp/';
+$config['sess_save_path'] = null;
 $config['sess_match_ip'] = false;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = false;
