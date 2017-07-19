@@ -10,3 +10,4 @@ logs
 .vagrant
 vendor
 /.phpintel
+/data/data.sql
