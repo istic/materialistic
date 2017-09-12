@@ -1,3 +1,18 @@
 body {
   padding-top: 70px;
 }
+
+#footer a.istic {
+
+    font-family: 'Comfortaa', cursive;
+    color: #FFD300;
+}
+
+#footer {
+	color: #FFF;
+	background: #000;
+}
+
+#footer a {
+	color: #d9230f;
+}

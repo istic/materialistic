@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8" />
 
+    <!-- Google Fonts --> 
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//code.jquery.com/jquery.js"></script>

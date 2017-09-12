@@ -1,5 +1,5 @@
 <div id="banner">
-    <h2>Terms & Conditions</h1>
+    <h2>Terms &amp; Conditions</h1>
 </div>
 
 <div class="row-fluid contentblock">
@@ -7,6 +7,8 @@
         <h2>Us</h2>
 
         <p>Materialistic is a private website, We'll do our best to keep your details secure, but we're not responsible for your data security. We don't keep plain text versions of your passwords, they're hashed using industry standard mechanisms, but if someone manages to get into our database I can't guarrentee they won't apply more computing power to cracking them than we're willing to devote to keeping them.</p>
+
+        <p>We do keep details of the crowdfunding pledges you add to this site, but do not have access to any payment or personal information. We don't want access to any payment or personal information, the most we need from you is a name, an email and a password.</p>
 
         <p>We will never ask you for your password</p>
 
