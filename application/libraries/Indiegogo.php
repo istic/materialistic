@@ -10,35 +10,20 @@ class Indiegogo {
 	}
 
 	function campaign_data($url){
-		$data = $this->project_page($url);
+		// https://www.indiegogo.com/private_api/campaigns/an-ode-to-divine-dirt-an-original-grimoire
 
-		var_dump(htmlentities($url));
-		var_dump(htmlentities($data));die();
-		$regex = "#<script>(.*?)</script>#s";
-		$works = preg_match_all($regex, $data, $matches);
+		$matches = array();
+		$regex = "#projects/(.*)#s";
+		$works = preg_match_all($regex, $url, $matches);
 		if(!$works){
 			die("Parsing failed");
 		}
 
-		$script_data = $matches[1][0];
+		// $data = $this->project_page($url);
 
-		var_dump(htmlentities($script_data));die();
-
-		$regex = '#FIG_CACHE\["(.*?)"\] \= (.*?);$#sm';
-		$works = preg_match_all($regex, $script_data, $matches);
-		if(!$works){
-			die("Parsing failed");
-		}
-
-
-
-		$project = array();
-
-		foreach($matches[1] as $i => $data){
-			$project[$matches[1][$i]] = json_decode($matches[2][$i]);
-		}
-
-		return $project;
+		$url = 'https://www.indiegogo.com/private_api/campaigns/'.$matches[1][0];
+		return json_decode($this->project_page($url));
+		
 	}
 
 
@@ -52,42 +37,48 @@ class Indiegogo {
 
 		$campaign = new Campaign_Object();
 
-		$data = $this->campaign_data($url);
-		$project = $data['campaign'];
+		$project = $this->campaign_data($url)->response;
+		// $project = $data['campaign'];
 
 		// header("Content-Type: Application/JSON");
 		// print json_encode($project);
 		// die();
 
+		// die($project->name);
+
 
 		$campaign->name         = $project->title;
 		$campaign->URL          = $url;
-		$campaign->target       = $project->goal_no_cents;
-		$campaign->pledged      = $project->total_pledged_cents/100;
-		$campaign->backer_count = $project->total_fans;
-		$campaign->site         = 'fig';
+		$campaign->target       = $project->goal/100;
+		$campaign->pledged      = $project->collected_funds/100;
+		$campaign->backer_count = $project->contributions_count;
+		$campaign->site         = 'indiegogo';
 
 		// ENUM('live', 'successful', 'failed', 'suspended', 'deleted', 'canceled');
 
-		if($project->ended && $project->success){
+		$started = strtotime($project->funding_started_at);
+		$ended   = strtotime($project->funding_ends_at);
+		$now = time();
+
+		if($now > $ended){
 			$state = 'successful';
-		} elseif($project->ended && !$project->success){
-			$state = 'failed';
-		} elseif(!$project->ended){
+		} elseif($now > $started){
 			$state = 'live';
+		} else {
+			$state = 'suspended';
 		} 
 
 		$campaign->status   = $state;
-		$campaign->vitality = ($project->state == 'successful' || $project->state == 'live');
+		$campaign->vitality = ($state == 'successful' || $state == 'live');
 
-		$campaign->creator  = $project->company->name;
-		$campaign->currency = $project->currency;
-		$campaign->category = "Computer Games";
-		$campaign->photo    = $project->featured_image_url;
-		$campaign->country  = "US";
+		$campaign->creator  = $project->owner_name;
+		$campaign->currency = $project->currency->iso_code;
+		$campaign->category = $project->category->text;
+		$campaign->photo    = $project->video_overlay_url;
+		$campaign->country  = $project->country_code_alpha_2;
 
-		$campaign->date_start    = date(DATETIME_MYSQL, strtotime($project->start_timestamp));
-		$campaign->date_end      = date(DATETIME_MYSQL, strtotime($project->end_timestamp));
+		$campaign->date_start    = date(DATETIME_MYSQL, strtotime($project->funding_started_at));
+		$campaign->date_end      = date(DATETIME_MYSQL, strtotime($project->funding_ends_at));
 		$campaign->date_checked  = date(DATETIME_MYSQL);
 		$campaign->date_created  = date(DATETIME_MYSQL);
 		$campaign->date_modified = date(DATETIME_MYSQL);
@@ -108,11 +99,8 @@ class Indiegogo {
             // You can set any number of default request options.
             'timeout'  => 2.0,
         ]);
-        echo "<pre>";
         // $response = $client->request('GET', $url, ['debug' => true, 'User-Agent' => 'Materialist (Like Gecko)',]);
-        $response = $client->request('GET', $url, ['debug' => true, 'headers' => ['User-Agent' => 'Materialist (Like Gecko)',]]);
-
-        var_dump($request->headers);
+        $response = $client->request('GET', $url, ['debug' => false, 'headers' => ['User-Agent' => 'Materialist (Like Gecko)',]]);
     
         $data = (String)$response->getBody();
 
@@ -129,19 +117,23 @@ class Indiegogo {
 	}
 
 	function rewards($url){
-		$data = $this->campaign_data($url);
+		$project = $this->campaign_data($url)->response;
+		// header("Content-Type: Application/JSON");
+		// print json_encode($project);
+		// die();
+
 
 		$rewards = array();
-		foreach($data['reward_bundles'] as $reward_src){
+		foreach($project->perks as $perk){
 			$reward = new stdClass();
 
-			$eta = strtotime($reward_src->delivery_year."-".$reward_src->delivery_month."-01");
+			$eta = strtotime($perk->estimated_delivery_date);
 
-			$reward->id = $reward_src->id;
-			$reward->description = $reward_src->description;
-			$reward->title = $reward_src->name;
+			$reward->id = $perk->id;
+			$reward->description = $perk->description;
+			$reward->title = $perk->label;
 			$reward->estimated_delivery_on = $eta;
-			$reward->minimum = $reward_src->price_cents/100;
+			$reward->minimum = $perk->amount;
 			$rewards[$reward->id] = $reward;
 
 		}

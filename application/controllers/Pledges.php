@@ -20,12 +20,12 @@ class Pledges extends AUTHED_Controller {
 				return $this->from_fig($clean_url);
 				break;
 
-			// case "indiegogo.com":
-			// case "www.indiegogo.com":
+			case "indiegogo.com":
+			case "www.indiegogo.com":
 
-			// 	$clean_url = $purl['scheme']."://".$purl['host'].$purl['path'];
-			// 	return $this->from_indiegogo($clean_url);
-			// 	break;
+				$clean_url = $purl['scheme']."://".$purl['host'].$purl['path'];
+				return $this->from_indiegogo($clean_url);
+				break;
 
 			case false:
 				$this->viewdata['error'] = 'That wasn\'t a URL';
@@ -203,6 +203,7 @@ class Pledges extends AUTHED_Controller {
 		$this->load->model('Pledge');
         $this->load->library('form_validation');
         $this->load->library('kickstarter');
+        $this->load->library('indiegogo');
         $this->load->library('fig');
 
         $pledge_id = $this->input->get_post('id', TRUE);
