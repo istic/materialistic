@@ -13,7 +13,7 @@ class Indiegogo {
 		// https://www.indiegogo.com/private_api/campaigns/an-ode-to-divine-dirt-an-original-grimoire
 
 		$matches = array();
-		$regex = "#projects/(.*)#s";
+		$regex = "#projects/(.*?)/#s";
 		$works = preg_match_all($regex, $url, $matches);
 		if(!$works){
 			die("Parsing failed");

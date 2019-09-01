@@ -1,5 +1,7 @@
 <?PHP
 
+use GuzzleHttp\Client;
+
 class Kickstarter {
 	private $CI;
 
@@ -7,19 +9,45 @@ class Kickstarter {
 		$this->CI =& get_instance(); 
 	}
 
-	function search($query){
-		$cachefile = '/tmp/materialistic-'.md5($query);
+	function search($query){			
+		$url = 'https://www.kickstarter.com/projects/search.json?search=&term='.urlencode($query);
+		$data = $this->GET($url);
+		return json_decode($data);
+	}
+
+
+	function GET($url){
+		$cachefile = '/tmp/materialistic-ks-'.md5($url);
 		if(file_exists($cachefile)){
-			return unserialize(file_get_contents($cachefile));
+			return file_get_contents($cachefile);
 		}
-		$url = 'http://www.kickstarter.com/projects/search.json?search=&term='.urlencode($query);
-		$data = json_decode(file_get_contents($url));
-		file_put_contents($cachefile, serialize($data));
+		$client = new Client([
+            // Base URI is used with relative requests
+            // 'base_uri' => 'https://trello.com/',
+            // You can set any number of default request options.
+            'timeout'  => 2.0,
+        ]);
+        // $response = $client->request('GET', $url, ['debug' => true, 'User-Agent' => 'Materialist (Like Gecko)',]);
+        $response = $client->request('GET', $url, ['debug' => false, 'headers' => ['User-Agent' => 'Materialist (Like Gecko)',]]);
+    
+        $data = (String)$response->getBody();
+
+        if(!$response->getStatusCode() === 200) {
+        	var_dump($data);
+			die("X".$response->getStatusCode());
+            return false;
+        }
+
+        $data = (String)$response->getBody();
+
+		file_put_contents($cachefile, $data);
+
 		return $data;
 	}
 
+
 	function canonical_url($creator, $project){
-		return 'http://www.kickstarter.com/projects/'.$creator.'/'.$project;
+		return 'https://www.kickstarter.com/projects/'.$creator.'/'.$project;
 	}
 
 	function create_from_search_results($search_results){
@@ -71,19 +99,8 @@ class Kickstarter {
 	}
 
 
-	function project_page($url){
-		$cachefile = '/tmp/materialistic-ks-'.md5($url);
-		if(file_exists($cachefile)){
-			return file_get_contents($cachefile);
-		}
-		$data = file_get_contents($url);
-		file_put_contents($cachefile, $data);
-
-		return $data;
-	}
-
 	function campaign_data($url){
-		$page = $this->project_page($url);
+		$page = $this->GET($url);
 		$res = preg_match_all('/window.current_project = "(.*)"/', $page, $matches);
 		if(!count($matches)){
 
