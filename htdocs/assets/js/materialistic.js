@@ -14,7 +14,8 @@ MaterialIstic = {
 		if($('#rewards').length){
 			$('#rewards').on('change', MaterialIstic.prefillRewards);
 		}
-		$('#bookmarklet').click(MaterialIstic.bookmarklet)
+		$('#bookmarklet').click(MaterialIstic.bookmarklet);
+		autosize(document.querySelector('#description'));
 	},
 
 	bookmarklet : function(){
@@ -23,11 +24,8 @@ MaterialIstic = {
 	},
 
 	autogrow : function(e) {
-		console.log("Hello");
-		$(this).height(0);
-	    while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
-	        $(this).height($(this).height()+1);
-	    };
+		var ta = document.querySelector('#description');
+		autosize.update(ta);
 	}
 }
 
@@ -38,7 +36,7 @@ $( document ).ready(function() {
 
 	$("#description").bind('change keyup', MaterialIstic.autogrow);
 	
-	console.log($("#description"));
+	// console.log($("#description"));
 
 	MaterialIstic.init()
 });

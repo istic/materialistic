@@ -1,0 +1,23 @@
+{
+  "name": "material.istic.net",
+  "version": "1.0.0",
+  "description": "Materialistic",
+  "main": "index.js",
+  "dependencies": {
+    "autosize": "^4.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/istic/materialistic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/istic/materialistic/issues"
+  },
+  "homepage": "https://github.com/istic/materialistic#readme"
+}

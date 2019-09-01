@@ -11,3 +11,5 @@ logs
 vendor
 /.phpintel
 /data/data.sql
+/node_modules
+/cache

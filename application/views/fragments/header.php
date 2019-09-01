@@ -29,6 +29,9 @@
     <script src="/assets/libraries/tablecloth/js/jquery.tablecloth.js"></script>
     <script src="/assets/libraries/tablecloth/js/jquery.tablesorter.js"></script>
 
+    <!-- Autosize -->
+    <script src="/assets/libraries/autosize.min.js"></script>
+
     <!-- Material.Istic.Net -->
     <link href="/assets/css/materialistic.css" rel="stylesheet">
     <script src="/assets/js/materialistic.js"></script>
