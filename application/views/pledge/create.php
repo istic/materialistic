@@ -14,6 +14,8 @@
 				<?PHP
 			}
              echo validation_errors();
+
+
 		?>
 
 		<h1><?PHP echo $create ? 'Create new' : 'Edit' ?> Pledge</h1>
@@ -57,6 +59,7 @@
 				</div>
 				<span class="help-block">(Optional)</span>
 			</div>
+
 			<div class="form-group <?PHP echo form_error('is_delivered') ? 'has-error' : '' ?>">
 				<label class="control-label" for="is_delivered">Has Been Delivered?</label>
 				<div class="radio">

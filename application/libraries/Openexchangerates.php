@@ -65,13 +65,12 @@ class OpenExchangeRates {
 		if($from == 'USD'){
 			$USD = $value;
 		} else {
-			$to_usd = $data->rates->$from;
+			$to_usd = 1 / $data->rates->$from;
 			$USD = $value * $to_usd;
 		}
 
-		$to_value = $data->rates->$to;
 
-		// Then, convert
+		$to_value = $data->rates->$to;
 
 		return round($USD * $to_value);
 

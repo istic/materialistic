@@ -10,6 +10,10 @@
   	<p><?PHP echo $campaign->status; ?>, <?PHP echo number_format($campaign->backer_count); ?> backers
   	raised <?PHP echo view_currency($campaign->currency, $campaign->pledged); ?> of a total of 
   		<?PHP echo view_currency($campaign->currency, $campaign->target); ?> 
+
+
+<br/>
+
   	(<?PHP number_format(printf('%d', ($campaign->pledged/$campaign->target) * 100)); ?>% Funded)
   	</p>
   	<p><?PHP echo $campaign->date_start; ?> &ndash; <?PHP echo $campaign->date_end; ?></p>

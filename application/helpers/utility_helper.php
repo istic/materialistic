@@ -57,7 +57,7 @@ function currency_symbol($currency){
       return 'CA$';
 
     default:
-      return '?';
+      return $currency;
   }
 }
 
