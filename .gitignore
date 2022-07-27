@@ -13,3 +13,5 @@ vendor
 /data/data.sql
 /node_modules
 /cache
+data/temp
+
